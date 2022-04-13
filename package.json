@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "fastclick": "^1.0.6",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",

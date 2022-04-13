@@ -5,8 +5,16 @@
 </template>
 
 <script>
+import {getHomeData} from './../../service/api/index.js'
 export default {
-  name: "Home"
+  name: "Home",
+  created() {
+    getHomeData().then((response)=> {
+      console.log(response);
+    }).catch(error=> {
+      console.log(error);
+    })
+  }
 }
 </script>
 
