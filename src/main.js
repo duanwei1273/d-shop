@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
-import { Tabbar, TabbarItem } from 'vant';
+import { Tabbar, TabbarItem, Swipe, SwipeItem, Loading  } from 'vant';
 
 //引入fasteclick
 import FastClick from 'fastclick'
@@ -16,7 +16,10 @@ import './style/common.less'
 
 
 const app = createApp(App)
+app.use(Loading);
 app.use(router);
 app.use(Tabbar);
 app.use(TabbarItem);
+app.use(Swipe);
+app.use(SwipeItem);
 app.mount('#app')

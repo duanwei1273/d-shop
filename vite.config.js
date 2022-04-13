@@ -9,5 +9,10 @@ export default defineConfig({
       styleImport({
         resolves: [VantResolve()],
       }),
-  ]
+  ],
+
+
 })
+
+
+
