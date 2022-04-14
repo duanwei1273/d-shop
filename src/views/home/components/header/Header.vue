@@ -35,7 +35,7 @@ export default {
 //首页顶部导航栏
 
 .wrapper {
-  position: relative;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 2;
@@ -68,7 +68,7 @@ export default {
 .locationWrapper .address {
   padding-left: 1.875rem;
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

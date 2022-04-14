@@ -4,7 +4,11 @@
       <!--  首页顶部导航栏  -->
       <Header />
       <!--  首页轮播图  -->
-      <Sowing />
+      <Sowing
+          :sowing_list="sowing_list"
+      />
+      <!--  中间导航    -->
+      <Nav :nav_list="nav_list" />
     </div>
     <van-loading v-else class="vloading" type="spinner" color="#1989fa" >正在努力加载中...</van-loading>
   </div>
@@ -14,39 +18,39 @@
 import {getHomeData} from './../../service/api/index.js'
 import Header from "./components/header/Header.vue"
 import Sowing from "./components/sowing/Sowing.vue"
-import {reactive, provide, ref} from "vue"
+import Nav from "./components/nav/Nav.vue"
 
 export default {
   name: "Home",
-  setup() {
-    let sowing_list;
-    let showLoading = ref(true)
-
+  components:  {
+    Header,
+    Sowing,
+    Nav
+  },
+  data(){
+    return{
+      //首页轮播图数据
+      sowing_list: [],
+      //导航数据
+      nav_list: [],
+      //是否显示加载图标
+      showLoading: true
+    }
+  },
+  created() {
     getHomeData().then((response)=> {
       console.log(response);
       if(response.success){
-        sowing_list = reactive(response.data.list[0].icon_list)
+        this.sowing_list = response.data.list[0].icon_list
+        this.nav_list = response.data.list[2].icon_list
 
-        showLoading.value = false
+        this.showLoading = false
       }
     }).catch(error=> {
       console.log(error);
     })
-
-    //发布
-    provide('sowing_list', sowing_list)
-
-    return {
-      showLoading
-    }
   },
-  // created() {
-  //
-  // },
-  components:  {
-    Header,
-    Sowing
-  }
+
 }
 </script>
 

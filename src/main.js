@@ -14,6 +14,9 @@ if ('addEventListener' in document) {
 //引入全局样式
 import './style/common.less'
 
+//引入rem
+import './config/rem.js'
+
 
 const app = createApp(App)
 app.use(Loading);

@@ -1,28 +1,28 @@
 <template>
   <div id="dashboard">
     <van-tabbar v-model="active" active-color="#75a342">
-      <van-tabbar-item badge="4" replace to="/dashboard/home">
+      <van-tabbar-item  replace to="/dashboard/home">
         <span>首页</span>
         <template #icon="props">
           <img :src="props.active ? home_icon.active : home_icon.inactive" />
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item badge="4" replace to="/dashboard/category">
+      <van-tabbar-item  replace to="/dashboard/category">
         <span>分类</span>
         <template #icon="props">
           <img :src="props.active ? category_icon.active : category_icon.inactive" />
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item badge="4" replace to="/dashboard/cart">
+      <van-tabbar-item  replace to="/dashboard/cart">
         <span>购物车</span>
         <template #icon="props">
           <img :src="props.active ? cart_icon.active : cart_icon.inactive" />
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item badge="4" replace to="/dashboard/mine">
+      <van-tabbar-item  replace to="/dashboard/mine">
         <span>我的</span>
         <template #icon="props">
           <img :src="props.active ? mine_icon.active : mine_icon.inactive" />
