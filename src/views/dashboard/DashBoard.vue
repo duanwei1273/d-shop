@@ -32,7 +32,13 @@
     </van-tabbar>
 
     <!-- 路由出口   -->
-    <router-view />
+
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" :key="$route.name" v-if="$route.meta.keepAlive"/>
+      </keep-alive>
+      <component :is="Component" :key="$route.name" v-if="!$route.meta.keepAlive"/>
+    </router-view>
 
   </div>
 </template>
@@ -49,32 +55,61 @@ import mine_url1  from '../../images/tabbar/mine_default.png'
 import mine_url2  from '../../images/tabbar/mine_selected.png'
 export default {
   name: "DashBoard",
-  setup() {
-    const active = ref(0);
-    const home_icon = {
-      active: home_url2,
-      inactive: home_url1,
-    };
-    const category_icon = {
-      active: category_url2,
-      inactive: category_url1,
-    };
-    const cart_icon = {
-      active: cart_url2,
-      inactive: cart_url1,
-    };
-    const mine_icon = {
-      active: mine_url2,
-      inactive: mine_url1,
-    };
+  data() {
     return {
-      home_icon,
-      category_icon,
-      cart_icon,
-      mine_icon,
-      active,
-    };
+      active: Number(sessionStorage.getItem('tabBarActiveIndex')) || 0,
+      home_icon: {
+        active: home_url2,
+        inactive: home_url1,
+      },
+      category_icon: {
+        active: category_url2,
+        inactive: category_url1,
+      },
+      cart_icon: {
+        active: cart_url2,
+        inactive: cart_url1,
+      },
+      mine_icon: {
+        active: mine_url2,
+        inactive: mine_url1,
+      },
+    }
   },
+  // setup() {
+  //   const active = ref(Number(sessionStorage.getItem('tabBarActiveIndex')) || 0);
+  //   const home_icon = {
+  //     active: home_url2,
+  //     inactive: home_url1,
+  //   };
+  //   const category_icon = {
+  //     active: category_url2,
+  //     inactive: category_url1,
+  //   };
+  //   const cart_icon = {
+  //     active: cart_url2,
+  //     inactive: cart_url1,
+  //   };
+  //   const mine_icon = {
+  //     active: mine_url2,
+  //     inactive: mine_url1,
+  //   };
+  //   return {
+  //     home_icon,
+  //     category_icon,
+  //     cart_icon,
+  //     mine_icon,
+  //     active,
+  //   };
+  // },
+  watch: {
+    active(value){
+      // console.log(value);
+      let tabBarActiveIndex = value > 0 ? value : 0;
+      //缓存到本地
+      sessionStorage.setItem('tabBarActiveIndex', value);
+    }
+  }
 }
 </script>
 

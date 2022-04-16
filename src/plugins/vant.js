@@ -1,8 +1,8 @@
-import { createApp } from 'vue';
+import Vue from 'vue'
+
+// 1. 底部的导航
 import { Tabbar, TabbarItem } from 'vant';
 
-const app = createApp();
-app.use(Tabbar);
-app.use(TabbarItem);
+
 
 

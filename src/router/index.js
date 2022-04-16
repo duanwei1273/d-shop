@@ -17,10 +17,10 @@ const routes = [
         component: DashBoard,
         children: [
             {path: '/dashboard', redirect: '/dashboard/home'},
-            {path: 'home', name: 'home', component: Home},
-            {path: 'category', name: 'category', component: Category},
-            {path: 'cart', name: 'cart', component: Cart},
-            {path: 'mine', name: 'mine', component: Mine},
+            {path: 'home', name: 'home', component: Home, meta: { keepAlive:true}},
+            {path: 'category', name: 'category', component: Category, meta: { keepAlive:true}},
+            {path: 'cart', name: 'cart', component: Cart, meta: { keepAlive:false}},
+            {path: 'mine', name: 'mine', component: Mine, meta: { keepAlive:false}},
         ]
     }
 ]
