@@ -9,6 +9,7 @@
           v-for="(product, index) in you_like_product_list"
           :key="product.id"
           :product="product"
+          :homeAddToCart="homeAddToCart"
       />
     </div>
   </div>
@@ -19,7 +20,8 @@ import YouLikeItem from "./YouLikeItem.vue"
 export default {
   name: "YouLike",
   props: {
-    you_like_product_list: Array
+    you_like_product_list: Array,
+    homeAddToCart: Function
   },
   components: {
     YouLikeItem

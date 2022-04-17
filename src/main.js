@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
-import { Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage  } from 'vant';
+import store from './store/index.js'
+import { Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast  } from 'vant';
 
 //引入fasteclick
 import FastClick from 'fastclick'
@@ -35,8 +36,11 @@ app.config.globalProperties.$filters =  {
 
 //使用路由
 app.use(router);
+//使用vuex
+app.use(store);
 
 //使用vantUI组件
+app.use(Toast);
 app.use(VanImage);
 app.use(Loading);
 app.use(Tabbar);

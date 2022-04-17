@@ -15,7 +15,7 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item  replace to="/dashboard/cart">
+      <van-tabbar-item  replace to="/dashboard/cart" :badge="gooodsNum > 0 ? gooodsNum : '' ">
         <span>购物车</span>
         <template #icon="props">
           <img :src="props.active ? cart_icon.active : cart_icon.inactive" />
@@ -44,7 +44,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import {mapState, mapMutations} from 'vuex'
 import home_url1  from '../../images/tabbar/home_default.png'
 import home_url2  from '../../images/tabbar/home_selected.png'
 import category_url1  from '../../images/tabbar/category_default.png'
@@ -109,6 +110,27 @@ export default {
       //缓存到本地
       sessionStorage.setItem('tabBarActiveIndex', value);
     }
+  },
+  computed: {
+    ...mapState(['shopCart']),
+    gooodsNum(){
+      if(this.shopCart){
+        let num = 0;//总的购物车商品数量
+        Object.values(this.shopCart).forEach((goods, index)=> {
+          num += goods.num;
+        });
+        return num;
+      }else {
+        return 0;
+      }
+    }
+  },
+  mounted() {
+    //获取购物车数据
+    this.INIT_SHOP_CART();
+  },
+  methods: {
+    ...mapMutations(['INIT_SHOP_CART'])
   }
 }
 </script>

@@ -20,7 +20,7 @@
         <div class="price">
           {{$filters.moneyFormat(product.price)}}
         </div>
-        <div class="iconCartWrapper">
+        <div class="iconCartWrapper" @click="AddToCart(product)">
           <svg viewBox="0 0 52 52" class="icon iconCart">
             <defs>
               <radialGradient cx="27.0288363%" cy="10.3693483%" fx="27.0288363%"
@@ -55,7 +55,8 @@
 export default {
   name: "ProductItem",
   props: {
-    products: Array
+    products: Array,
+    AddToCart: Function
   }
 }
 </script>

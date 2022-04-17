@@ -11,10 +11,16 @@
       <Nav :nav_list="nav_list" />
 
       <!--  秒杀区    -->
-      <FlashSale :flash_sale_product_list="flash_sale_product_list"/>
+      <FlashSale
+          :flash_sale_product_list="flash_sale_product_list"
+          :homeAddToCart="homeAddToCart"
+      />
 
       <!--  猜你喜欢    -->
-      <YouLike :you_like_product_list="you_like_product_list"/>
+      <YouLike
+          :you_like_product_list="you_like_product_list"
+          :homeAddToCart="homeAddToCart"
+      />
 
       <!--  返回顶部    -->
       <MakePage v-if="showBackStatus" :scrollToTop="scrollToTop"/>
@@ -32,6 +38,14 @@ import Nav from "./components/nav/Nav.vue"
 import FlashSale from "./components/flashSale/FlashSale.vue"
 import YouLike from "./components/youLike/YouLike.vue"
 import MakePage from "./components/markPage/MakePage.vue";
+
+//引用通知插件
+// import PubSub from 'pubsub-js'
+import { Toast } from 'vant';
+
+//引入vuex
+import {mapMutations} from 'vuex'
+import {ADD_GOODS} from "../../store/mutations-type";
 
 export default {
   name: "Home",
@@ -62,29 +76,35 @@ export default {
   created() {
 
     this.reqData();
-
-    // getHomeData().then((response)=> {
-    //   console.log(response);
-    //   if(response.success){
-    //     this.sowing_list = response.data.list[0].icon_list
-    //     this.nav_list = response.data.list[2].icon_list
-    //     this.flash_sale_product_list = response.data.list[3].product_list
-    //     this.you_like_product_list = response.data.list[12].product_list
-    //
-    //
-    //     //隐藏动画
-    //     this.showLoading = false
-    //
-    //     //开始监听滚动,到达一定位置就显示返回顶部按钮
-    //     showBack((status)=>{
-    //       this.showBackStatus = status;
-    //     })
-    //   }
-    // }).catch(error=> {
-    //   console.log(error);
-    // })
   },
+  // mounted() {
+  //   //订阅添加购物车的消息
+  //   PubSub.subscribe('homeAddToCart', (msg, goods)=>{
+  //     if(msg === 'homeAddToCart'){
+  //       this.ADD_GOODS({
+  //         goodsId: goods.id,
+  //         goodsName: goods.name,
+  //         smallImage: goods.small_image,
+  //         goodsPrice: goods.price
+  //       })
+  //     }
+  //   })
+  // },
   methods:{
+    ...mapMutations(['ADD_GOODS']),
+    homeAddToCart(goods){
+      this.ADD_GOODS({
+        goodsId: goods.id,
+        goodsName: goods.name,
+        smallImage: goods.small_image,
+        goodsPrice: goods.price
+      });
+      //提示用户
+      Toast({
+        message: '添加到购物车成功！',
+        duration: 800
+      });
+    },
     async reqData() {
       let res = await getHomeData();
       // console.log(res);

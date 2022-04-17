@@ -2,7 +2,10 @@
   <div class="wrapper emptyWrapper">
     <div v-for="(categoriesDetail, index) in categoriesDetailData" :key="categoriesDetail.id">
       <div class="categoryTitle" >{{categoriesDetail.name}}</div>
-      <ProductItem :products="categoriesDetail.products"/>
+      <ProductItem
+          :products="categoriesDetail.products"
+          :AddToCart = 'AddToCart'
+      />
     </div>
   </div>
 </template>
@@ -12,7 +15,8 @@ import ProductItem from "../productItem/ProductItem.vue"
 export default {
   name: "ContentView",
   props: {
-    categoriesDetailData: Array
+    categoriesDetailData: Array,
+    AddToCart: Function
   },
   components: {
     ProductItem

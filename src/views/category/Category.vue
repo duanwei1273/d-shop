@@ -21,7 +21,10 @@
         </ul>
       </div>
       <!--  右边内容   -->
-      <ContentView :categoriesDetailData="categoriesDetailData" />
+      <ContentView
+          :categoriesDetailData="categoriesDetailData"
+          :AddToCart="AddToCart"
+      />
     </div>
     <van-loading v-else class="vloading" type="spinner" color="#1989fa" >正在努力加载中...</van-loading>
   </div>
@@ -32,6 +35,8 @@ import Header from "./components/header/Header.vue"
 import ContentView from "./components/contentView/ContentView.vue"
 import BScroll from 'better-scroll'
 import {getCategories, getCategoriesDetail} from './../../service/api/index.js'
+import { Toast } from 'vant'
+import {mapMutations} from "vuex";
 export default {
   name: "Category",
   data(){
@@ -54,6 +59,20 @@ export default {
     ContentView
   },
   methods: {
+    ...mapMutations(['ADD_GOODS']),
+    AddToCart(goods){
+      this.ADD_GOODS({
+        goodsId: goods.id,
+        goodsName: goods.name,
+        smallImage: goods.small_image,
+        goodsPrice: goods.price
+      });
+      //提示用户
+      Toast({
+        message: '添加到购物车成功！',
+        duration: 800
+      });
+    },
     //初始化数据界面
     async initData(){
       let leftRes = await getCategories();
@@ -99,7 +118,9 @@ export default {
       if(rightRes.success){
         this.categoriesDetailData =rightRes.data.cate;
       }
+      // console.log(this.categoriesDetailData);
     }
+
   }
 
 

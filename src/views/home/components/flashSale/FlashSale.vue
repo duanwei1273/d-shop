@@ -11,6 +11,7 @@
           v-for="(product, index) in flash_sale_product_list"
           :product="product"
           :key="product.id"
+          :homeAddToCart="homeAddToCart"
       />
     </div>
   </div>
@@ -21,7 +22,8 @@ import FlashSaleItem from "./FlashSaleItem.vue"
 export default {
   name: "FlashSale",
   props: {
-    flash_sale_product_list: Array
+    flash_sale_product_list: Array,
+    homeAddToCart: Function
   },
   components: {
     FlashSaleItem

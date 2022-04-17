@@ -26,7 +26,7 @@
               <div class="originPrice">{{$filters.moneyFormat(product.origin_price)}}</div>
             </div>
           </div>
-          <div class="iconCartWrapper">
+          <div class="iconCartWrapper" @click="homeAddToCart(product)">
             <svg viewBox="0 0 52 52" class="icon iconCart">
               <defs>
                 <radialGradient cx="27.0288363%" cy="10.3693483%" fx="27.0288363%" fy="10.3693483%" r="93.8427229%" id="radialGradient-1">
@@ -49,11 +49,18 @@
 </template>
 
 <script>
+// import PubSub from "pubsub-js";
 export default {
   name: "YouLikeItem",
   props: {
-    product: Object
-  }
+    product: Object,
+    homeAddToCart: Function
+  },
+  // methods: {
+  //   addToCart(goods){
+  //     PubSub.publish('homeAddToCart', goods);
+  //   }
+  // }
 }
 </script>
 
