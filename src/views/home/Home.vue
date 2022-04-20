@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {getHomeData} from './../../service/api/index.js'
+import {getHomeData, getzzy} from './../../service/api/index.js'
 import {showBack, animate} from "../../config/global.js"
 import Header from "./components/header/Header.vue"
 import Sowing from "./components/sowing/Sowing.vue"
@@ -76,6 +76,7 @@ export default {
   created() {
 
     this.reqData();
+    // this.zzy();
   },
   // mounted() {
   //   //订阅添加购物车的消息
@@ -104,6 +105,10 @@ export default {
         message: '添加到购物车成功！',
         duration: 800
       });
+    },
+    async zzy(){
+      let res = await getzzy('手表');
+      // console.log(res);
     },
     async reqData() {
       let res = await getHomeData();

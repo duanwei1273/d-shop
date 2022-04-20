@@ -3,7 +3,7 @@
     <!--头部区域-->
     <header class="titleWrapper">
       <h4><strong>购物车</strong></h4>
-      <button class="clearCart">清空购物车</button>
+      <button class="clearCart" @click="clearCart()">清空购物车</button>
     </header>
     <div class="contentWrapper">
       <!--中间内容-->
@@ -39,14 +39,19 @@
       <!--底部通栏-->
       <div class="tabBar">
         <div class="tabBarLeft">
-          <a href="javascript:;" class="cartCheckBox"></a>
+          <a
+              href="javascript:;"
+              class="cartCheckBox"
+              :checked="isSelectedAll"
+              @click.stop="selectedAll(isSelectedAll)"
+          ></a>
           <span style="font-size: 16px;">全选</span>
           <div class="selectAll">
-            合计：<span class="totalPrice">199.00</span>
+            合计：<span class="totalPrice">{{$filters.moneyFormat(totalPrice)}}</span>
           </div>
         </div>
         <div class="tabBarRight">
-          <a href="#" class="pay">去结算(3)</a>
+          <router-link class="pay" :to="{path:'/confirmOrder'}" tag="a">去结算({{goodsCount}})</router-link>
         </div>
       </div>
     </div>
@@ -61,16 +66,43 @@ export default {
   name: "Cart",
   computed: {
     ...mapState(['shopCart']),
+    //选中商品的总件数
+    goodsCount(){
+      let selectedGoodsCount = 0;
+      Object.values(this.shopCart).forEach((goods, index)=>{
+        if(goods.checked){
+          selectedGoodsCount += 1;
+        }
+      });
+      return Object.keys(this.shopCart).length;
+    },
+    //商品是否全选
+    isSelectedAll(){
+      let tag = this.goodsCount > 0;
+      Object.values(this.shopCart).forEach((goods, index)=>{
+        if(!goods.checked){
+          tag = false;
+        }
+      });
+      return tag;
+    },
+    //计算商品的总价
+    totalPrice(){
+      let totalPrice = 0;
+      Object.values(this.shopCart).forEach((goods, index)=>{
+        if(goods.checked){
+          totalPrice += goods.price * goods.num;
+        }
+      });
+      return totalPrice;
+    },
   },
   methods: {
-    ...mapMutations(['REDUCE_CART','ADD_GOODS','SELECTED_SINGER_GOODS']),
+    ...mapMutations(['REDUCE_CART','ADD_GOODS','SELECTED_SINGER_GOODS','SELECTED_ALL_GOODS','CLEAR_CART']),
     //移除购物车
     removeOutCart(goodsId, goodsNum){
-      console.log('点击')
-      console.log(goodsNum);
       if(goodsNum > 1){
         this.REDUCE_CART({goodsId});
-        console.log('减一')
 
         }else if(goodsNum === 1) {
         //挽留
@@ -102,16 +134,38 @@ export default {
 
     //单个商品选中和取消
     singerGoodsSelected(goodsId) {
-      console.log('点击')
+
       this.SELECTED_SINGER_GOODS({goodsId});
+    },
+
+    //全选和取消全选
+    selectedAll(isSelected) {
+
+      this.SELECTED_ALL_GOODS({isSelected});
+    },
+
+    //清空购物车
+    clearCart(){
+      Dialog.confirm({
+        title: '温馨提示',
+        message:
+            '确定清空所有商品吗？',
+      }).then(() => {
+        this.CLEAR_CART();
+      })
+          .catch(() => {
+            //do noting
+          });
     }
+
+
 
   },
 
 }
 </script>
 
-<style lang="css" scoped>
+<style  scoped>
 #cart{
   width: 100%;
   height: 100%;
@@ -163,7 +217,7 @@ export default {
 
 }
 
-.cartCheckBox[checked]{
+.cartCheckBox[checked = true]{
   background-position: -1.2rem 0;
 }
 
