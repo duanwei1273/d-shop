@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <div class="itemWrapper" v-for="(nav, index) in  nav_list" :key="nav.cid">
+    <div class="itemWrapper" v-for="(nav, index) in  nav_list" :key="nav.id">
       <div class="imageWrapper">
-        <img class="image" :src="nav.icon_url" :alt="nav.name">
+        <img class="image" :src="nav.picture" :alt="nav.name">
       </div>
       <div class="titleWrapper">
         <div class="title">{{nav.name}}</div>
@@ -42,6 +42,7 @@ export default {
 
 .image {
   width: 58.823%;
+  height: 58.823%;
   height: auto;
   display: inline-block;
 }

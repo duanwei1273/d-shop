@@ -1,5 +1,5 @@
 <template>
-  <div id="cart">
+  <div id="cart" v-if="userInfo.id">
     <!--头部区域-->
     <header class="titleWrapper">
       <h4><strong>购物车</strong></h4>
@@ -8,7 +8,7 @@
     <div class="contentWrapper">
       <!--中间内容-->
       <main class="contentWrapperList">
-        <section>
+        <section style="border-radius: 0.5rem; margin-left: 0.2rem; margin-right: 0.2rem">
           <div class="shopCartListCon" v-for="(goods, index) in shopCart" :key="goods.id">
             <div class="left">
               <a
@@ -56,16 +56,18 @@
       </div>
     </div>
   </div>
+  <SelectLogin v-else />
 </template>
 
 <script>
 import {mapState, mapMutations} from 'vuex'
 import { Dialog } from 'vant'
+import SelectLogin from "../login/SelectLogin.vue"
 import {SELECTED_SINGER_GOODS} from "../../store/mutations-type";
 export default {
   name: "Cart",
   computed: {
-    ...mapState(['shopCart']),
+    ...mapState(['shopCart','userInfo']),
     //选中商品的总件数
     goodsCount(){
       let selectedGoodsCount = 0;
@@ -161,6 +163,9 @@ export default {
 
 
   },
+  components: {
+    SelectLogin
+  }
 
 }
 </script>
@@ -178,6 +183,7 @@ export default {
   background: #fff;
   -webkit-background-size: 0.1rem 4.4rem;
   background-size: 0.1rem 4.4rem;
+
   position: fixed;
   left: 0;
   top: 0;

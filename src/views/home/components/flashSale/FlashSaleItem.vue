@@ -2,13 +2,14 @@
   <div class="wrapper" data-index="3">
     <div class="itemWrapper">
       <div class="imageWrapper">
-        <img class="image" :src="product.small_image" :alt="product.name">
+
+        <img class="image" :src="product.g_picture" :alt="product.g_name">
       </div>
       <div>
-        <div class="name">{{ product.name }}</div>
-        <div class="originPrice">{{ $filters.moneyFormat(product.origin_price)  }}</div>
+        <div class="name" >{{ product.g_name }}</div>
+        <div class="originPrice">{{ $filters.moneyFormat(product.g_old_price)  }}</div>
         <div class="priceWrapper">
-          <div class="price">{{ $filters.moneyFormat(product.price)}}</div>
+          <div class="price">{{ $filters.moneyFormat(product.g_price)}}</div>
           <div class="iconCartWrapper" @click="homeAddToCart(product)">
             <svg viewBox="0 0 52 52" class="icon icon-60">
               <defs>

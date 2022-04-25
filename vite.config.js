@@ -15,7 +15,7 @@ export default defineConfig({
         port: '8080',
         proxy: {
             '/api': {
-                target: 'http://192.168.0.109:8080/', // 凡是遇到 /api 路径的请求，都映射到 target 属性
+                target: 'http://demo.itlike.com/web/xlmc/api/', // 凡是遇到 /api 路径的请求，都映射到 target 属性
                 changeOrigin: true,
             }
         }

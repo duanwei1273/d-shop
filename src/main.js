@@ -2,15 +2,15 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
 import store from './store/index.js'
-import { Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
+import { Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
 
 //引入fasteclick
 import FastClick from 'fastclick'
-if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function() {
-        FastClick.attach(document.body);
-    }, false);
-}
+// if ('addEventListener' in document) {
+//     document.addEventListener('DOMContentLoaded', function() {
+//         FastClick.attach(document.body);
+//     }, false);
+// }
 
 //引入全局样式
 import './style/common.less'
@@ -39,7 +39,10 @@ app.use(router);
 //使用vuex
 app.use(store);
 
+
 //使用vantUI组件
+app.use(Field)
+app.use(Uploader);
 app.use(Grid);
 app.use(GridItem);
 app.use(Icon);

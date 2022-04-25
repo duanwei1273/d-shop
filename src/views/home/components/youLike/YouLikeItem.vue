@@ -3,7 +3,7 @@
     <div class="content">
       <div class="imageWrapper">
         <div class="is-visible">
-          <van-image class="image" :src="product.small_image" alt="product.product_name">
+          <van-image class="image" :src="product.g_picture" alt="product.product_name">
             <template v-slot:loading>
               <van-loading type="spinner" size="20" />
             </template>
@@ -12,7 +12,7 @@
       </div>
       <div class="infoWrapper">
         <div class="name">
-          <span class="nameText">{{product.name}}</span>
+          <span class="nameText">{{product.g_name}}</span>
         </div>
         <div class="tagsWrapper">
           <div class="H1B9Rvu"></div>
@@ -21,9 +21,9 @@
           <div class="priceInfo">
             <div class="pricePart">
               <div class="price">
-                {{$filters.moneyFormat(product.price)}}
+                {{$filters.moneyFormat(product.g_price)}}
               </div>
-              <div class="originPrice">{{$filters.moneyFormat(product.origin_price)}}</div>
+              <div class="originPrice">{{$filters.moneyFormat(product.g_old_price)}}</div>
             </div>
           </div>
           <div class="iconCartWrapper" @click="homeAddToCart(product)">

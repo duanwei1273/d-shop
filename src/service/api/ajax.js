@@ -25,6 +25,8 @@ export default function ajax(url = '', parmas = {}, type = 'GET') {
         }else if(type.toUpperCase() === 'POST'){
             //发起POST请求
             promise = axios.post(url, parmas);
+        } else if(type.toUpperCase() === 'PUT'){
+            promise = axios.put(url, parmas);
         }
 
         //处理结果返回

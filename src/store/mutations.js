@@ -4,14 +4,16 @@ import {
     REDUCE_CART,
     SELECTED_SINGER_GOODS,
     SELECTED_ALL_GOODS,
-    CLEAR_CART
+    CLEAR_CART,
+    USER_INFO,
+    INIT_USER_INFO
 
 } from './mutations-type'
 import {getStore, setStore} from './../config/global'
 
 
 export default {
-    //往购物车1中添加数据
+    //往购物车中添加数据
     [ADD_GOODS](state, {goodsId, goodsName, smallImage, goodsPrice}){
         let shopCart = state.shopCart;
         //判断商品是否存在
@@ -104,5 +106,20 @@ export default {
         state.shopCart = null;
         state.shopCart = {...state.shopCart};
         setStore('shopCart',state.shopCart);
+    },
+
+    //保存用户信息到本地
+    [USER_INFO](state, userInfo){
+        state.userInfo = userInfo;
+        setStore('userInfo', state.userInfo);
+    },
+
+    //初始化用户信息
+    [INIT_USER_INFO](state){
+        let userInfo = getStore('userInfo');
+        if(userInfo){
+            state.userInfo = JSON.parse(userInfo);
+        }
     }
+
 }

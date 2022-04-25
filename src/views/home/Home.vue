@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {getHomeData, getzzy} from './../../service/api/index.js'
+import {getHomeData, getAllGoods, getGoodsClassify} from './../../service/api/index.js'
 import {showBack, animate} from "../../config/global.js"
 import Header from "./components/header/Header.vue"
 import Sowing from "./components/sowing/Sowing.vue"
@@ -76,7 +76,8 @@ export default {
   created() {
 
     this.reqData();
-    // this.zzy();
+    this.getAllGoodsData();
+    this.getgoodsC();
   },
   // mounted() {
   //   //订阅添加购物车的消息
@@ -106,18 +107,31 @@ export default {
         duration: 800
       });
     },
-    async zzy(){
-      let res = await getzzy('手表');
-      // console.log(res);
+    //获取分类
+    async getgoodsC(){
+      let res = await getGoodsClassify();
+      console.log(res);
+      if(res.success){
+        this.nav_list = res.object.types;
+      }
+    },
+    //获取所有商品数据
+    async getAllGoodsData(){
+      let res = await getAllGoods();
+      console.log(res);
+      if(res.success){
+        this.you_like_product_list= res.object.goods;
+        this.flash_sale_product_list = res.object.goods.slice(0,10);
+      }
     },
     async reqData() {
       let res = await getHomeData();
-      // console.log(res);
+      console.log(res);
       if(res.success){
         this.sowing_list = res.data.list[0].icon_list
-        this.nav_list = res.data.list[2].icon_list
-        this.flash_sale_product_list = res.data.list[3].product_list
-        this.you_like_product_list = res.data.list[12].product_list
+        // this.nav_list = res.data.list[2].icon_list
+        // this.flash_sale_product_list = res.data.list[3].product_list
+        // this.you_like_product_list = res.data.list[12].product_list
 
 
         //隐藏动画

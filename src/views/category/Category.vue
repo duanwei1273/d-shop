@@ -34,7 +34,7 @@
 import Header from "./components/header/Header.vue"
 import ContentView from "./components/contentView/ContentView.vue"
 import BScroll from 'better-scroll'
-import {getCategories, getCategoriesDetail} from './../../service/api/index.js'
+import {getCategories, getCategoriesDetail, getAllGoods, getGoodsClassify} from './../../service/api/index.js'
 import { Toast } from 'vant'
 import {mapMutations} from "vuex";
 export default {
@@ -53,6 +53,8 @@ export default {
   },
   created() {
     this.initData();
+    this.getAllGoodsData();
+    this.getgoodsC();
   },
   components: {
     Header,
@@ -73,12 +75,31 @@ export default {
         duration: 800
       });
     },
+    //初始化左边分类数据
+    async getgoodsC(){
+      let res = await getGoodsClassify();
+      console.log(res);
+      if(res.success){
+        this.categoriesData = res.object.types;
+      }
+    },
+
+
+    //初始化有病商品数据
+    async getAllGoodsData(){
+
+    },
+
+
+
+
+
     //初始化数据界面
     async initData(){
       let leftRes = await getCategories();
       // console.log(leftRes.data.cate);
       if(leftRes.success){
-        this.categoriesData = leftRes.data.cate;
+        // this.categoriesData = leftRes.data.cate;
       }
 
       let rightRes = await getCategoriesDetail('/lk001');
