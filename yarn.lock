@@ -123,6 +123,11 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@vant/area-data@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@vant/area-data/-/area-data-1.2.4.tgz#641da1f5b90a7b2a586ff0271734f7e77cfe4448"
+  integrity sha512-oowT5fePKdPR4DShoLnXejcXtW323JhtbJreOpFRBP2sNc/krgDe5W1BBCJg+frKet7x7cd0d8pA7xR3Vv9PLQ==
+
 "@vant/icons@^1.7.1":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@vant/icons/-/icons-1.8.0.tgz#36b13f2e628b533f6523a93a168cf02f07056674"
@@ -548,6 +553,11 @@ image-size@~0.5.0:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
   integrity sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=
+
+install@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/install/-/install-0.13.0.tgz#6af6e9da9dd0987de2ab420f78e60d9c17260776"
+  integrity sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==
 
 is-core-module@^2.8.1:
   version "2.8.1"

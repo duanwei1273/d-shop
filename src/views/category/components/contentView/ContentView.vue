@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper emptyWrapper">
-    <div v-for="(categoriesDetail, index) in categoriesDetailData" :key="categoriesDetail.id">
-      <div class="categoryTitle" >{{categoriesDetail.name}}</div>
+    <div >
+      <div class="categoryTitle" >推荐</div>
       <ProductItem
-          :products="categoriesDetail.products"
+          :products="categoriesDetailData"
           :AddToCart = 'AddToCart'
       />
     </div>

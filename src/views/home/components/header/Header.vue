@@ -5,7 +5,7 @@
         <path fill="#81838E" fill-rule="evenodd"
               d="M14.521 30.445c.817.738 2.142.75 2.958 0 0 0 11.521-9.82 11.521-17.158C29 5.95 23.18 0 16 0S3 5.949 3 13.287c0 7.339 11.521 17.158 11.521 17.158zM16 18a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"></path>
       </svg>
-      <span class="address">东二男生宿舍</span>
+      <span class="address">{{city || '东二男生宿舍'}}</span>
       <svg viewBox="0 0 32 32" class="icon iconArrow">
         <path fill="#81838E" fill-rule="evenodd"
               d="M14.724 19.17c.783.784 2.05.788 2.837 0l5.047-5.047c1.173-1.172.776-2.123-.869-2.123H10.545c-1.652 0-2.04.952-.869 2.123l5.048 5.048z"></path>
@@ -27,7 +27,34 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  data(){
+    return{
+      longitude: 0, // 经度
+      latitude: 0, // 维度
+      city: '', // 城市
+    }
+  },
+  mounted() {
+    this.getLocation();
+  },
+  methods:{
+    getLocation(){
+      let geolocation = new qq.maps.Geolocation("3PXBZ-DOQK6-FQISF-M2BXT-MOETT-L6FIM", "myapp");
+      geolocation.getLocation(this.showPosition, this.showError);
+    },
+    showPosition(position){
+      console.log(position);
+      this.latitude = position.lat;
+      this.longitude = position.lng;
+      this.city = position.city;
+    },
+    showError(){
+      console.log('定位失败');
+      // 继续定位
+      this.getLocation();
+    }
+  }
 }
 </script>
 

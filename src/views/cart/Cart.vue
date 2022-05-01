@@ -26,9 +26,9 @@
               <div class="bottomContent">
                 <p class="shopPrice">{{ $filters.moneyFormat(goods.price) }}</p>
                 <div class="shopDeal">
-                  <span @click="removeOutCart(goods.id, goods.num)">-</span>
+                  <span @click="removeOutCart(goods.id, goods.num,goods.cid)">-</span>
                   <input disabled type="number" v-model="goods.num">
-                  <span @click="addToCart(goods.id, goods.name, goods.small_image, goods.price)">+</span>
+                  <span @click="addToCart(goods.id, goods.name, goods.small_image, goods.price,goods.cid)">+</span>
                 </div>
               </div>
             </div>
@@ -55,6 +55,8 @@
         </div>
       </div>
     </div>
+<!--    <button @click="openSocket">点击</button>-->
+<!--    <button @click="sendMessage">发送</button>-->
   </div>
   <SelectLogin v-else />
 </template>
@@ -64,8 +66,25 @@ import {mapState, mapMutations} from 'vuex'
 import { Dialog } from 'vant'
 import SelectLogin from "../login/SelectLogin.vue"
 import {SELECTED_SINGER_GOODS} from "../../store/mutations-type";
+
+//接口方法
+import {addUserGoodsCard, delAllGoodsCard, delUserGoodsCard, getUserGoodsCard} from "../../service/api";
+
 export default {
   name: "Cart",
+  data(){
+    return{
+      socket:null,
+      userId:localStorage.getItem("ms_uuid"),
+      toUserId:'1',
+      content:'你好1',
+      Cid:null
+    }
+  },
+
+  mounted() {
+    this.initGoodsCard();
+  },
   computed: {
     ...mapState(['shopCart','userInfo']),
     //选中商品的总件数
@@ -101,8 +120,31 @@ export default {
   },
   methods: {
     ...mapMutations(['REDUCE_CART','ADD_GOODS','SELECTED_SINGER_GOODS','SELECTED_ALL_GOODS','CLEAR_CART']),
+
+    //初始化购物车数据
+    async initGoodsCard(){
+      let id = parseInt(this.userInfo.id);
+      let res = await getUserGoodsCard(id);
+      if(res.success){
+        res.object.cards.forEach((good,index)=>{
+
+          this.ADD_GOODS({
+            goodsId: good.g_id,
+            goodsName: good.g_name,
+            smallImage: good.g_picture,
+            goodsPrice: good.g_price,
+            gNum:good.g_nums,
+            cId: good.id
+          })
+        })
+      }
+    },
+
+
     //移除购物车
-    removeOutCart(goodsId, goodsNum){
+    async  removeOutCart(goodsId, goodsNum,cId){
+      let res = await delUserGoodsCard(cId,goodsNum)
+      console.log(res);
       if(goodsNum > 1){
         this.REDUCE_CART({goodsId});
 
@@ -125,13 +167,19 @@ export default {
       },
 
     //添加购物车
-    addToCart(goodsId, goodsName, smallImage, goodsPrice){
-      this.ADD_GOODS({
-        goodsId,
-        goodsName,
-        smallImage,
-        goodsPrice
-      })
+    async addToCart(goodsId, goodsName, smallImage, goodsPrice,cId){
+      debugger
+      let res = await addUserGoodsCard(cId)
+      console.log(res);
+      if(res.success){
+        this.ADD_GOODS({
+          goodsId,
+          goodsName,
+          smallImage,
+          goodsPrice
+        })
+      }
+
     },
 
     //单个商品选中和取消
@@ -147,7 +195,15 @@ export default {
     },
 
     //清空购物车
-    clearCart(){
+    async clearCart(){
+      let ids = Array()
+      for (let key in this.shopCart){
+        ids.push(parseInt(this.shopCart[key].cid))
+      }
+      console.log(ids);
+      let res = delAllGoodsCard(ids);
+      console.log(res);
+
       Dialog.confirm({
         title: '温馨提示',
         message:
@@ -158,7 +214,66 @@ export default {
           .catch(() => {
             //do noting
           });
-    }
+    },
+
+
+
+    openSocket() {
+      if (typeof WebSocket == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+      } else {
+        console.log("您的浏览器支持WebSocket");
+        //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+        //等同于socket = new WebSocket("ws://localhost:8888/xxxx/im/25");
+        //var socketUrl="${request.contextPath}/im/"+$("#userId").val();
+        let socketUrl =
+            "ws://192.168.0.109:8080/webservice/2//" + this.userId;
+        socketUrl = socketUrl.replace("https", "ws").replace("http", "ws");
+        console.log(socketUrl);
+        if (this.socket != null) {
+          this.socket.close();
+          this.socket = null;
+        }
+        this.socket = new WebSocket(socketUrl);
+        //打开事件
+        this.socket = new WebSocket(socketUrl);
+        //打开事件
+        this.socket.onopen = function() {
+          console.log("websocket已打开");
+          //socket.send("这是来自客户端的消息" + location.href + new Date());
+        };
+        //获得消息事件  
+        this.socket.onmessage = function(msg) {
+          console.log(msg);
+          //发现消息进入    开始处理前端触发逻辑
+        };
+        //关闭事件
+        this.socket.onclose = function() {
+          console.log("websocket已关闭");
+        };
+        //发生了错误事件
+        this.socket.onerror = function() {
+          console.log("websocket发生了错误");
+        };
+      }
+    },
+    sendMessage() {
+      let timeShape = Date.now();
+      if (typeof WebSocket == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+      } else {
+        console.log("您的浏览器支持WebSocket");
+        console.log(
+            '{"toUserId":"' +
+            this.toUserId +
+            '","contentText":"' +
+            this.content +
+            '"}'
+        );
+        this.socket.send('{"toUserId":"'+this.toUserId+'","contentText":"'+this.content+'","timeShape":"'+timeShape+'","type":"chat"}');
+
+      }
+    },
 
 
 

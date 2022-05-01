@@ -2,7 +2,7 @@
   <div id="eidAddress">
     <!--  顶部导航栏  -->
     <van-nav-bar
-        title="添加地址"
+        title="修改地址"
         left-text="返回"
         left-arrow
         :fixed=true
@@ -11,7 +11,7 @@
 
     <van-address-edit
         :area-list="areaList"
-        show-postal
+        :name="name"
         show-delete
         show-set-default
         show-search-result
@@ -27,12 +27,13 @@
 
 <script>
 import {Toast} from "vant";
-
+import { areaList } from '@vant/area-data';
 export default {
   name: "EidAddress",
   data() {
     return {
-      areaList:{},
+      name: 'aaa',
+      areaList:areaList,
       searchResult: [],
     };
   },

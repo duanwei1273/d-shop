@@ -27,6 +27,8 @@ export default function ajax(url = '', parmas = {}, type = 'GET') {
             promise = axios.post(url, parmas);
         } else if(type.toUpperCase() === 'PUT'){
             promise = axios.put(url, parmas);
+        } else if(type.toUpperCase() === 'DELETE'){
+            promise = axios.delete(url, parmas);
         }
 
         //处理结果返回

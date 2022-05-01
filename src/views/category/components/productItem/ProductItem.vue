@@ -3,11 +3,11 @@
     <div class="infoWrapper" v-for="(product, index) in products" :key="product.id">
       <div class="imageWrapper">
         <div class="LazyLoad is-visible">
-          <img class="image" :src="product.small_image" alt="product.product_name"></div>
+          <img class="image" :src="product.g_picture" alt="product.product_name"></div>
       </div>
       <div class="nameWrapper">
         <div class="name">
-          <span class="nameTag nameText">{{product.product_name}}</span>
+          <span class="nameTag nameText">{{product.g_name}}</span>
         </div>
         <div class="spec">
           {{product.spec}}
@@ -18,7 +18,7 @@
       </div>
       <div class="priceWrapper">
         <div class="price">
-          {{$filters.moneyFormat(product.price)}}
+          {{$filters.moneyFormat(product.g_price)}}
         </div>
         <div class="iconCartWrapper" @click="AddToCart(product)">
           <svg viewBox="0 0 52 52" class="icon iconCart">

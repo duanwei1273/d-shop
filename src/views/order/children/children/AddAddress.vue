@@ -11,7 +11,6 @@
     <!--收货地址 -->
     <van-address-edit
         :area-list="areaList"
-        show-postal
 
         show-set-default
         show-search-result
@@ -26,21 +25,37 @@
 
 <script>
 import { Toast } from 'vant';
+import { areaList } from '@vant/area-data';
+import {addADDress} from "../../../../service/api/index.js";
+import {mapState} from "vuex";
 export default {
   name: "AddAddress",
   data() {
     return {
-      areaList:{},
+      areaList:areaList,
       searchResult: [],
     };
+  },
+  computed:{
+    ...mapState(['userInfo'])
   },
   methods: {
     onClickLeft(){
       this.$router.back();
     },
 
-    onSave() {
-      Toast('save');
+    async onSave(content) {
+      // Toast('save');
+      if(this.userInfo.id){
+        let res = await addADDress(content.province+content.city+content.county+content.addressDetail, content.name, content.tel, this.userInfo.id)
+      }else {
+        Toast({
+          message: '您未登录账号，请退出重新登录！',
+          duration:400
+        })
+      }
+
+
     },
     onChangeDetail(val) {
       if (val) {

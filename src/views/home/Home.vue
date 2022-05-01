@@ -17,13 +17,24 @@
       />
 
       <!--  猜你喜欢    -->
-      <YouLike
-          :you_like_product_list="you_like_product_list"
-          :homeAddToCart="homeAddToCart"
-      />
+
+<!--      <Pull :onPull="pull" ref="pull">-->
+<!--      </Pull>-->
+        <YouLike
+            :you_like_product_list="you_like_product_list"
+            :homeAddToCart="homeAddToCart"
+        />
+
 
       <!--  返回顶部    -->
       <MakePage v-if="showBackStatus" :scrollToTop="scrollToTop"/>
+
+
+
+      <!--  路由出口    -->
+      <router-view/>
+
+
     </div>
     <van-loading v-else class="vloading" type="spinner" color="#1989fa" >正在努力加载中...</van-loading>
   </div>
@@ -38,6 +49,8 @@ import Nav from "./components/nav/Nav.vue"
 import FlashSale from "./components/flashSale/FlashSale.vue"
 import YouLike from "./components/youLike/YouLike.vue"
 import MakePage from "./components/markPage/MakePage.vue";
+
+// import Pull from "../../components/Pull.vue";
 
 //引用通知插件
 // import PubSub from 'pubsub-js'
@@ -55,7 +68,8 @@ export default {
     Nav,
     FlashSale,
     YouLike,
-    MakePage
+    MakePage,
+    // Pull
   },
   data(){
     return{
@@ -94,6 +108,23 @@ export default {
   // },
   methods:{
     ...mapMutations(['ADD_GOODS']),
+
+    pull(num) {
+      console.log('pull回调');
+      setTimeout(() => {
+        this.num = num;
+        if (this.history_list.length >= this.pk_list_data.others_family_list.length) {
+          console.log('完了');
+          this.$refs.pull.$emit('loadOver') // 加载完毕
+        } else {
+          this.$refs.pull.$emit('loadEnd') // 加载完毕
+        }
+
+      }, 2000)
+
+    },
+
+
     homeAddToCart(goods){
       this.ADD_GOODS({
         goodsId: goods.id,

@@ -57,7 +57,7 @@
 
 
     <div class="logout">
-      <button>退出登录</button>
+      <button @click="logOut">退出登录</button>
     </div>
 
 
@@ -73,12 +73,24 @@
 
 <script>
 import {mapState} from "vuex";
+import {mapMutations} from "vuex";
+import {Toast} from "vant";
 
 export default {
   name: "UserCenter",
   computed: {
     ...mapState(['userInfo']),
   },
+  methods: {
+    ...mapMutations(['RESET_USER_INFO']),
+    logOut(){
+      this.RESET_USER_INFO();
+      Toast({
+        message: '退出登录成功!',
+        duration: 500
+      });
+    },
+  }
 }
 </script>
 

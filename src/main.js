@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
 import store from './store/index.js'
-import { Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
+import { Step, Steps,Tab, Tabs, Button , ActionBar, ActionBarIcon, ActionBarButton ,Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
 
 //引入fasteclick
 import FastClick from 'fastclick'
@@ -24,7 +24,10 @@ import './config/rem.js'
 
 
 
+
 const app = createApp(App)
+
+
 
 //引入全局过滤器
 // import './config/filters.js'
@@ -41,6 +44,14 @@ app.use(store);
 
 
 //使用vantUI组件
+app.use(Step);
+app.use(Steps);
+app.use(Tab);
+app.use(Tabs);
+app.use(Button);
+app.use(ActionBar);
+app.use(ActionBarIcon);
+app.use(ActionBarButton);
 app.use(Field)
 app.use(Uploader);
 app.use(Grid);

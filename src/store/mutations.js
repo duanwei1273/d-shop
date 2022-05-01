@@ -6,27 +6,29 @@ import {
     SELECTED_ALL_GOODS,
     CLEAR_CART,
     USER_INFO,
-    INIT_USER_INFO
+    INIT_USER_INFO,
+    RESET_USER_INFO
 
 } from './mutations-type'
-import {getStore, setStore} from './../config/global'
+import {getStore, removeStore, setStore} from './../config/global'
 
 
 export default {
     //往购物车中添加数据
-    [ADD_GOODS](state, {goodsId, goodsName, smallImage, goodsPrice}){
+    [ADD_GOODS](state, {goodsId, goodsName, smallImage, goodsPrice, gNum,cId}){
         let shopCart = state.shopCart;
         //判断商品是否存在
         if(shopCart[goodsId]){//存在
             shopCart[goodsId]['num']++;
         }else {//不存在
             shopCart[goodsId] = {
-                'num' : 1,
+                'num' : gNum?gNum:1,
                 'id' : goodsId,
                 'name' : goodsName,
                 'small_image' : smallImage,
                 'price' : goodsPrice,
-                'checked' : true
+                'checked' : true,
+                'cid': cId
             }
         }
         //产生新对象
@@ -120,6 +122,12 @@ export default {
         if(userInfo){
             state.userInfo = JSON.parse(userInfo);
         }
-    }
+    },
+
+    //退出登录清空用户数据
+    [RESET_USER_INFO](state){
+        state.userInfo = {};
+        removeStore('userInfo');
+    },
 
 }

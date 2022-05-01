@@ -7,3 +7,4 @@ export const CLEAR_CART = 'CLEAR_CART';//清除购物车
 
 export const USER_INFO= 'USER_INFO';//保存用户信息到本地
 export const INIT_USER_INFO = 'INIT_USER_INFO';//初始化用户信息
+export const RESET_USER_INFO = 'RESET_USER_INFO';//退出登录清空用户数据

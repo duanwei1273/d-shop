@@ -4,12 +4,16 @@ import {createRouter, createWebHistory} from 'vue-router'
 //引入一级组件
 import DashBoard from "./../views/dashboard/DashBoard.vue";
 import Home from "./../views/home/Home.vue";
+import GoodsDetails from "../views/home/children/GoodsDetails.vue";
+
 import Mine from "./../views/mine/Mine.vue";
 import UserCenter from "../views/mine/children/UserCenter.vue";
 import ModifyThePicture from "../views/mine/children/children/ModifyThePicture.vue";
 import ModifyTheNickname from "../views/mine/children/children/ModifyTheNickname.vue";
 import ModifyTheEmail from "../views/mine/children/children/ModifyTheEmail.vue";
 import ModifyThePw from "../views/mine/children/children/ModifyThePw.vue";
+import Myorder from "../views/mine/children/Myorder.vue";
+import OrderDetails from "../views/mine/children/children/OrderDetails.vue";
 
 import Cart from "./../views/cart/Cart.vue";
 import Category from "./../views/category/Category.vue";
@@ -22,6 +26,7 @@ import EditAddress from "../views/order/children/children/EditAddress.vue";
 import Login from "../views/login/Login.vue";
 import Register from "../views/login/Register.vue"
 
+import ServiceMsg from "../views/service/ServiceMsg.vue";
 
 //创建路由对象
 const routes = [
@@ -32,7 +37,15 @@ const routes = [
         component: DashBoard,
         children: [
             {path: '/dashboard', redirect: '/dashboard/home'},
-            {path: 'home', name: 'home', component: Home, meta: { keepAlive:true}},
+            {
+                path: 'home',
+                name: 'home',
+                component: Home,
+                meta: { keepAlive:true},
+                children: [
+                    {path: 'goodsDetails', name: 'goodsDetails', component: GoodsDetails}
+                ]
+            },
             {path: 'category', name: 'category', component: Category, meta: { keepAlive:true}},
             {path: 'cart', name: 'cart', component: Cart, meta: { keepAlive:false}},
             {
@@ -51,6 +64,14 @@ const routes = [
                             {path:'modifyTheEmail', name: 'modifyTheEmail', component: ModifyTheEmail},
                             {path:'modifyThePw', name: 'modifyThePw', component: ModifyThePw},
 
+                        ]
+                    },
+                    {
+                        path: 'myOrder',
+                        name: 'myOrder',
+                        component: Myorder,
+                        children: [
+                            {path: 'orderDetails', name: 'orderDetails', component: OrderDetails}
                         ]
                     }
                 ]
@@ -74,7 +95,8 @@ const routes = [
         ]
     },
     {path: '/login', name: 'login', component: Login},
-    {path: '/register', name: 'register', component: Register}
+    {path: '/register', name: 'register', component: Register},
+    {path: '/msg', name: 'msg', component: ServiceMsg}
 ]
 
 const router = createRouter({

@@ -11,7 +11,7 @@
               class="categoryItem"
               v-for="(cate, index) in categoriesData"
               :class="{selected: currentIndex === index}"
-              @click="clickLeftLi(index)"
+              @click="clickLeftLi(index,cate.id)"
               :key="cate.id"
               ref="menuList"
           >
@@ -34,7 +34,7 @@
 import Header from "./components/header/Header.vue"
 import ContentView from "./components/contentView/ContentView.vue"
 import BScroll from 'better-scroll'
-import {getCategories, getCategoriesDetail, getAllGoods, getGoodsClassify} from './../../service/api/index.js'
+import {getCategories, getCategoriesDetail, getAllGoods, getGoodsClassify, getCategoryGoods} from './../../service/api/index.js'
 import { Toast } from 'vant'
 import {mapMutations} from "vuex";
 export default {
@@ -63,22 +63,24 @@ export default {
   methods: {
     ...mapMutations(['ADD_GOODS']),
     AddToCart(goods){
+      console.log(goods.id);
       this.ADD_GOODS({
         goodsId: goods.id,
-        goodsName: goods.name,
-        smallImage: goods.small_image,
-        goodsPrice: goods.price
+        goodsName: goods.g_name,
+        smallImage: goods.g_picture,
+        goodsPrice: goods.g_price
       });
       //提示用户
+
       Toast({
-        message: '添加到购物车成功！',
+        message: '添加到购物车成功aaa！',
         duration: 800
       });
     },
     //初始化左边分类数据
     async getgoodsC(){
       let res = await getGoodsClassify();
-      console.log(res);
+      // console.log(res);
       if(res.success){
         this.categoriesData = res.object.types;
       }
@@ -102,11 +104,12 @@ export default {
         // this.categoriesData = leftRes.data.cate;
       }
 
-      let rightRes = await getCategoriesDetail('/lk001');
+      let rightRes = await getCategoryGoods(1);
+      // console.log(rightRes);
       if(rightRes.success){
-        this.categoriesDetailData =rightRes.data.cate;
+        this.categoriesDetailData =rightRes.object.goods;
       }
-      // console.log(this.categoriesData, this.categoriesDetailData);
+      // console.log(this.categoriesDetailData);
 
 
       //隐藏loading框
@@ -125,19 +128,21 @@ export default {
     },
 
     //左边点击事件
-    async clickLeftLi(index){
+    async clickLeftLi(index,id){
       //改变搜引
       this.currentIndex = index;
-
+      //
       //滚动到对应位置
       let meunLists = this.$refs.menuList;
       let el = meunLists[index];
       this.leftScroll.scrollToElement(el, 300);
 
       //获取右边数据
-      let rightRes = await getCategoriesDetail(`/li00${index + 1}`);
+      let rightRes = await getCategoryGoods(parseInt(id));
+
+      // console.log(rightRes);
       if(rightRes.success){
-        this.categoriesDetailData =rightRes.data.cate;
+        this.categoriesDetailData =rightRes.object.goods;
       }
       // console.log(this.categoriesDetailData);
     }
