@@ -12,7 +12,7 @@
       </svg>
     </div>
     <div class="searchWrapper">
-      <div class="searchContent">
+      <div class="searchContent" @click="goSearch">
         <div class="iconSearchWrapper">
           <svg viewBox="0 0 32 32" class="icon iconSearch">
             <path fill="#999" fill-rule="evenodd"
@@ -53,6 +53,11 @@ export default {
       console.log('定位失败');
       // 继续定位
       this.getLocation();
+    },
+
+    //去搜索界面
+    goSearch(){
+      this.$router.push({name: 'goodsSearch'})
     }
   }
 }

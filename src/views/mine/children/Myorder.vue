@@ -6,63 +6,64 @@
         <van-icon name="arrow-left" />
       </div>
       <div class="search">
-        <input type="text" placeholder="搜索订单" />
+        <input type="text" placeholder="搜索订单" v-model="value"/>
         <div class="searchIcon" >
           <van-icon name="search" />
         </div>
       </div>
     </div>
 
-    <van-tabs v-model:active="activeName" style="margin-top: 2.5rem">
-      <van-tab title="待支付" name="a">
+    <van-tabs v-model:active="activeName" style="margin-top: 2.5rem" @click-tab="tabChlick">
+      <van-tab title="待发货" name="a">
         <!--   待支付订单面板     -->
-        <div class="wrapper" @click="this.$router.push({name:'orderDetails'})">
-          <div class="wrapperItem">
+        <div class="wrapper">
+          <div class="wrapperItem" v-for="(order, index) in orders" :key="order.id" >
             <div class="header">
               <span class="titleName">天天特价工厂</span>
-              <span class="titleState">待支付</span>
+              <span class="titleTime"> {{ order.create_time }}</span>
+              <span class="titleState">{{order.order_status}}</span>
             </div>
-            <div class="content">
+            <div class="content" @click="this.$router.push({name: 'orderDetails',query:{id:order.id}})">
               <div class="contentLift">
-                <van-image src="https://cdn.jsdelivr.net/npm/@vant/assets/cat.jpeg" width="90" height="90" radius="5" />
+                <van-image :src="order.g_picture" width="90" height="90" radius="5" />
               </div>
               <div class="contentRight">
                 <div class="goodsName">篮球短裤男士夏季大码运动</div>
                 <div class="goodsPriceNum">
-                  <div class="goodsPrice">￥31.90</div>
-                  <div class="goodsNum">x1</div>
+                  <div class="goodsPrice">{{$filters.moneyFormat(order.g_price)}}</div>
+                  <div class="goodsNum">x{{order.g_count}}</div>
                 </div>
               </div>
             </div>
             <div class="footer">
-              <van-button class="btn" color="#000" plain size="small" round>延长收货</van-button>
+              <van-button class="btn" color="#000" plain size="small" round @click="refund">申请退款</van-button>
               <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>
               <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>
             </div>
           </div>
-          <div class="wrapperItem">
-            <div class="header">
-              <span class="titleName">天天特价工厂</span>
-              <span class="titleState">待支付</span>
-            </div>
-            <div class="content">
-              <div class="contentLift">
-                <van-image src="https://cdn.jsdelivr.net/npm/@vant/assets/cat.jpeg" width="90" height="90" radius="5" />
-              </div>
-              <div class="contentRight">
-                <div class="goodsName">篮球短裤男士夏季大码运动</div>
-                <div class="goodsPriceNum">
-                  <div class="goodsPrice">￥31.90</div>
-                  <div class="goodsNum">x1</div>
-                </div>
-              </div>
-            </div>
-            <div class="footer">
-              <van-button class="btn" color="#000" plain size="small" round>延长收货</van-button>
-              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>
-              <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>
-            </div>
-          </div>
+<!--          <div class="wrapperItem">-->
+<!--            <div class="header">-->
+<!--              <span class="titleName">天天特价工厂</span>-->
+<!--              <span class="titleState">待支付</span>-->
+<!--            </div>-->
+<!--            <div class="content">-->
+<!--              <div class="contentLift">-->
+<!--                <van-image src="https://cdn.jsdelivr.net/npm/@vant/assets/cat.jpeg" width="90" height="90" radius="5" />-->
+<!--              </div>-->
+<!--              <div class="contentRight">-->
+<!--                <div class="goodsName">篮球短裤男士夏季大码运动</div>-->
+<!--                <div class="goodsPriceNum">-->
+<!--                  <div class="goodsPrice">￥31.90</div>-->
+<!--                  <div class="goodsNum">x1</div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="footer">-->
+<!--              <van-button class="btn" color="#000" plain size="small" round>延长收货</van-button>-->
+<!--              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>-->
+<!--              <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </van-tab>
       <van-tab title="待收货" name="b">内容 2</van-tab>
@@ -76,19 +77,54 @@
 </template>
 
 <script>
+import {stateQuerOrder} from "../../../service/api/index.js";
+import {mapState} from "vuex";
+
 export default {
   name: "Myorder",
   data(){
     return{
-      activeName:null
+      //状态
+      activeName:'a',
+      //订单数组
+      orders:[],
+      //输入框
+      value: ''
     }
   },
   created() {
     this.activeName =  this.$route.params.activeName
   },
+  mounted() {
+    this.getOrder();
+  },
+  computed:{
+    ...mapState(['userInfo'])
+  },
   methods:{
-
-}
+    //获取订单数据
+    async getOrder(){
+      let state = ''
+      if(this.activeName === 'a'){
+        state = '待发货'
+      }
+      // console.log(state);
+      // console.log(this.userInfo.id);
+      let res = await stateQuerOrder(this.userInfo.id,state)
+      console.log(res);
+      if(res.success){
+        this.orders = res.object.orders
+      }
+    },
+    //点击tab
+    tabChlick(){
+      console.log('点击')
+    },
+    //退款
+    refund(){
+      console.log(this.value)
+    }
+  }
 }
 </script>
 
@@ -108,6 +144,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 200;
   width: 100%;
   height: 2.5rem;
   background-color: #fff;
@@ -164,6 +201,10 @@ export default {
 #myOrder .wrapper .wrapperItem .header .titleName{
   font-size: 0.9rem;
   font-weight: 600;
+}
+#myOrder .wrapper .wrapperItem .header .titleTime{
+  font-size: 0.5rem;
+  color: #808080;
 }
 #myOrder .wrapper .wrapperItem .header .titleState{
   font-size: 0.8rem;

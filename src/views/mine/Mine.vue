@@ -81,7 +81,7 @@
     </van-cell-group>
 
     <van-cell-group style="margin-top: 0.6rem">
-      <van-cell title="联系客服" value="客服时间07:00-22:00" is-link icon="service"></van-cell>
+      <van-cell title="联系客服" value="客服时间07:00-22:00" is-link icon="service" @click="goMsg"></van-cell>
       <van-cell title="意见反馈"  is-link icon="chat"></van-cell>
     </van-cell-group>
 
@@ -196,6 +196,10 @@ export default {
 
       }
     },
+    //去客服
+    goMsg(){
+      this.$router.push({name: 'msg'})
+    }
   },
 
   computed: {

@@ -34,7 +34,7 @@
 import Header from "./components/header/Header.vue"
 import ContentView from "./components/contentView/ContentView.vue"
 import BScroll from 'better-scroll'
-import {getCategories, getCategoriesDetail, getAllGoods, getGoodsClassify, getCategoryGoods} from './../../service/api/index.js'
+import {getGoodsClassify, getCategoryGoods, addUserGoodsCard} from './../../service/api/index.js'
 import { Toast } from 'vant'
 import {mapMutations} from "vuex";
 export default {
@@ -62,18 +62,21 @@ export default {
   },
   methods: {
     ...mapMutations(['ADD_GOODS']),
-    AddToCart(goods){
-      console.log(goods.id);
+    async AddToCart(goods){
+      // console.log(goods.id);
+      let res = await addUserGoodsCard(this.userInfo.id,goods.id);
+      console.log(res);
+      // if(res.success){
+      //
+      // }
       this.ADD_GOODS({
         goodsId: goods.id,
         goodsName: goods.g_name,
         smallImage: goods.g_picture,
         goodsPrice: goods.g_price
       });
-      //提示用户
-
       Toast({
-        message: '添加到购物车成功aaa！',
+        message: '添加到购物车成功！',
         duration: 800
       });
     },
@@ -98,11 +101,7 @@ export default {
 
     //初始化数据界面
     async initData(){
-      let leftRes = await getCategories();
-      // console.log(leftRes.data.cate);
-      if(leftRes.success){
-        // this.categoriesData = leftRes.data.cate;
-      }
+
 
       let rightRes = await getCategoryGoods(1);
       // console.log(rightRes);
@@ -130,7 +129,9 @@ export default {
     //左边点击事件
     async clickLeftLi(index,id){
       //改变搜引
+
       this.currentIndex = index;
+      console.log(index)
       //
       //滚动到对应位置
       let meunLists = this.$refs.menuList;

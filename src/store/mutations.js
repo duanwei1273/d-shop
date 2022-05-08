@@ -15,10 +15,11 @@ import {getStore, removeStore, setStore} from './../config/global'
 
 export default {
     //往购物车中添加数据
-    [ADD_GOODS](state, {goodsId, goodsName, smallImage, goodsPrice, gNum,cId}){
+    [ADD_GOODS](state, {goodsId, goodsName, smallImage, goodsPrice,gNum,cId,checked = true,isIf=true}){
         let shopCart = state.shopCart;
         //判断商品是否存在
-        if(shopCart[goodsId]){//存在
+
+        if(shopCart[goodsId] && isIf){//存在
             shopCart[goodsId]['num']++;
         }else {//不存在
             shopCart[goodsId] = {
@@ -27,7 +28,7 @@ export default {
                 'name' : goodsName,
                 'small_image' : smallImage,
                 'price' : goodsPrice,
-                'checked' : true,
+                'checked' : checked,
                 'cid': cId
             }
         }

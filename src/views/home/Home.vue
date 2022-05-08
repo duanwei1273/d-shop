@@ -8,7 +8,7 @@
           :sowing_list="sowing_list"
       />
       <!--  中间导航    -->
-      <Nav :nav_list="nav_list" />
+<!--      <Nav :nav_list="nav_list" />-->
 
       <!--  秒杀区    -->
       <FlashSale
@@ -41,7 +41,12 @@
 </template>
 
 <script>
-import {getHomeData, getAllGoods, getGoodsClassify} from './../../service/api/index.js'
+import {
+  getHomeData,
+  getAllGoods,
+  getGoodsClassify,
+  addUserGoodsCard
+} from './../../service/api/index.js'
 import {showBack, animate} from "../../config/global.js"
 import Header from "./components/header/Header.vue"
 import Sowing from "./components/sowing/Sowing.vue"
@@ -57,7 +62,7 @@ import MakePage from "./components/markPage/MakePage.vue";
 import { Toast } from 'vant';
 
 //引入vuex
-import {mapMutations} from 'vuex'
+import {mapMutations,mapState} from 'vuex'
 import {ADD_GOODS} from "../../store/mutations-type";
 
 export default {
@@ -86,6 +91,9 @@ export default {
       //是否显示返回顶部按钮
       showBackStatus: false
     }
+  },
+  computed:{
+    ...mapState(['userInfo'])
   },
   created() {
 
@@ -125,7 +133,10 @@ export default {
     },
 
 
-    homeAddToCart(goods){
+    async homeAddToCart(goods){
+      let res = await addUserGoodsCard(this.userInfo.id,goods.id);
+
+      console.log(res);
       this.ADD_GOODS({
         goodsId: goods.id,
         goodsName: goods.name,
@@ -153,6 +164,7 @@ export default {
       if(res.success){
         this.you_like_product_list= res.object.goods;
         this.flash_sale_product_list = res.object.goods.slice(0,10);
+        this.showLoading = false
       }
     },
     async reqData() {
@@ -166,7 +178,7 @@ export default {
 
 
         //隐藏动画
-        this.showLoading = false
+        // this.showLoading = false
 
         //开始监听滚动,到达一定位置就显示返回顶部按钮
         showBack((status)=>{

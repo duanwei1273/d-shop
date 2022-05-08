@@ -5,14 +5,14 @@
         title="我的地址"
         left-text="返回"
         left-arrow
+        right-text="完成"
         :fixed=true
         @click-left="onClickLeft"
+        @click-right="chooseOver"
     />
     <van-address-list
         v-model="chosenAddressId"
         :list="list"
-        :disabled-list="disabledList"
-        disabled-text="以下地址超出配送范围"
         default-tag-text="默认"
         @add="onAdd"
         @edit="onEdit"
@@ -31,12 +31,12 @@
 import { Toast } from 'vant';
 import {getAllAddress} from "../../../service/api/index.js";
 import {mapState} from "vuex";
-
+// import eventBus from "../eventbus.js";
 export default {
   name: "MyAddress",
   data() {
     return {
-      chosenAddressId: 2,
+      chosenAddressId: 0,
       list: [],
 
     }
@@ -64,9 +64,30 @@ export default {
       // Toast('编辑地址:' + index);
       console.log(item,index)
       this.$router.push({
-        path: '/confirmOrder/myaddress/editAddress'
+        name: 'editAddress',
+        params:{
+          id: item.id,
+          name: item.name,
+          address: item.address,
+          tel: item.tel,
+          aid: item.aid,
+          areaCode: item.areaCode
+        },
       })
     },
+
+    //选择地址
+    // chooseAdress(content){
+    //   // console.log(content);
+    //   this.$router.push({name: 'order',params: content})
+    // },
+    //选择地址完成
+    chooseOver(){
+      // console.log(this.chosenAddressId)
+      // console.log(this.list[this.chosenAddressId])
+      this.$router.push({name: 'order',params: this.list[this.chosenAddressId]})
+    },
+
 
     //获取所有地址信息
     async getAddress(){
@@ -77,7 +98,9 @@ export default {
             id: index,
             name: address.consignee,
             address: address.address,
-            tel: address.phone
+            tel: address.phone,
+            aid: address.id,
+            areaCode: address.areaCode
           })
         })
       }

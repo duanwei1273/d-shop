@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="itemWrapper" v-for="(nav, index) in  nav_list" :key="nav.id">
-      <div class="imageWrapper">
+      <div class="imageWrapper" >
         <img class="image" :src="nav.picture" :alt="nav.name">
       </div>
       <div class="titleWrapper">
@@ -16,6 +16,9 @@ export default {
   name: "Nav",
   props:{
     nav_list: Array
+  },
+  methods:{
+    //去分页面
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="select-login">
     <div class="bottom">
-      <img src="./images/lk_logo_sm.png" alt="" width="300">
+      <img src="./images/title1.jpg" alt="" width="300">
     </div>
 
     <h4>未登录，无法使用该功能</h4>
@@ -20,7 +20,7 @@ export default {
 
 <style scoped>
 .select-login{
-  background-color: #f5f5f5;
+  background-color: #fff;
   width: 100%;
   height: 100%;
   position: fixed;

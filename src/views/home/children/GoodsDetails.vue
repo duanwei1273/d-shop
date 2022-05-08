@@ -26,36 +26,103 @@
 
 
     <div class="warpper">
-      <div class="item">
-        <p><span>选择</span>口味</p>
+      <div class="item" >
+        <p @click="showSelecet"><span>选择</span>鞋码</p>
         <div class="goods">fasdasfasdfsadf </div>
         <div class="goods">dasfsdafasdfdas</div>
-        <div class="icons">
+        <div class="icons" >
           <van-icon name="arrow" />
         </div>
+      <van-popup v-model:show="showSele" position="bottom" round :style="{ height: '50%'}">
+        
+      </van-popup>
       </div>
       <div  class="item">
-        <p><span>发货</span>江苏苏州&nbsp;|&nbsp;快递：免运费</p>
+        <p ><span>发货</span>江苏苏州&nbsp;|&nbsp;快递：免运费</p>
         <p id="x1"><span id="peison">配送至：岳阳&nbsp;岳阳楼&nbsp;奇家岭</span></p>
-        <div class="icons">
-          <van-icon name="arrow" />
-        </div>
+<!--        <div class="icons">-->
+<!--          <van-icon name="arrow" />-->
+<!--        </div>-->
       </div>
       <div class="item">
-        <p><span>保障</span>7天无理由</p>
+        <p @click="showSecurity"><span>保障</span>7天无理由</p>
         <div class="icons">
           <van-icon name="arrow" />
         </div>
+        <van-popup v-model:show="showSec" position="bottom" round :style="{ height: '50%'}">
+          <div class="showSecContent">
+            <div class="header">
+              <h4>基础服务</h4>
+            </div>
+            <div class="content">
+              <div class="item">
+                <span class="itemIcon">
+                  <van-icon name="passed" color="red" />
+                </span>
+                <span class="itemContent">7天无理由</span>
+              </div>
+              <div class="item">
+                <span class="itemIcon">
+                  <van-icon name="passed" color="red" />
+                </span>
+                <span class="itemContent">保价服务</span>
+              </div>
+              <div class="item">
+                <span class="itemIcon">
+                  <van-icon name="passed" color="red" />
+                </span>
+                <span class="itemContent">退货运费险</span>
+              </div>
+              <div class="item">
+                <span class="itemIcon">
+                  <van-icon name="passed" color="red" />
+                </span>
+                <span class="itemContent">急速退款</span>
+              </div>
+              <div class="item">
+                <span class="itemIcon">
+                  <van-icon name="passed" color="red" />
+                </span>
+                <span class="itemContent">假一赔四</span>
+              </div>
+            </div>
+          </div>
+        </van-popup>
       </div>
       <div class="item">
-        <p><span>参数</span>生产日期 生产日期许可证编号</p>
+        <p @click="showParameter"><span>参数</span>生产日期 生产日期许可证编号</p>
         <div class="icons">
           <van-icon name="arrow" />
         </div>
+        <van-popup v-model:show="showPar" position="bottom" round :style="{ height: '80%'}">
+          <div class="showParContent">
+            <div class="header">
+              <h4>产品参数</h4>
+            </div>
+            <div class="content">
+              <div class="item">
+                <span class="itemTitle">品牌</span>
+                <span class="itemContent">速浪</span>
+
+              </div>
+<!--              <van-divider />-->
+              <div class="item">
+                <span class="itemTitle">尺码</span>
+                <span class="itemContent">S M L XL XXL XXXL</span>
+              </div>
+              <div class="item">
+                <span class="itemTitle">适用性别</span>
+                <span class="itemContent">男</span>
+              </div>
+              <div class="item">
+                <span class="itemTitle">上市时间</span>
+                <span class="itemContent">2021年夏季</span>
+              </div>
+            </div>
+          </div>
+        </van-popup>
       </div>
     </div>
-
-
 
 
     <van-action-bar>
@@ -75,15 +142,38 @@ export default {
       images:[
         'https://cdn.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
         'https://cdn.jsdelivr.net/npm/@vant/assets/apple-2.jpeg',
-      ]
+      ],
+      //是否弹出选择
+      showSele: false,
+      //是否弹出保障
+      showSec: false,
+      //是否弹出参数
+      showPar: false,
     }
+  },
+  methods:{
+    //弹出选择
+    showSelecet(){
+      this.showSele = true
+    },
+    //弹出保障
+    showSecurity(){
+      this.showSec = true
+    },
+    //showParameter
+    showParameter(){
+      this.showPar = true
+    }
+
+
+
   }
 }
 </script>
 
 <style scoped>
 #goodsDetails{
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -189,6 +279,47 @@ span{
 #x1 span{
   line-height: 15px;
   font-size: 1px;
+}
+
+
+
+/*弹出层样式*/
+.showParContent{
+  width: 100%;
+  height: 100%;
+}
+.showParContent .header{
+  text-align: center;
+  font-size: 1rem;
+}
+.showParContent .content{
+  color: #000;
+}
+.showParContent .content .item{
+  display: flex;
+  color: #000;
+
+}
+.showParContent .content .item .itemTitle{
+  color: #000;
+  font-size: 0.6rem;
+  width: 2.5rem;
+}
+.showParContent .content .item .itemContent{
+  color: #000;
+  font-size: 0.6rem;
+  margin-left: 2rem;
+}
+
+
+.showSecContent{
+  width: 100%;
+  height: 100%;
+}
+.showSecContent .header{
+  text-align: center;
+  font-size: 1rem;
+
 }
 
 </style>

@@ -15,7 +15,7 @@
                   href="javascript:;"
                   class="cartCheckBox"
                   :checked="goods.checked"
-                  @click.stop="singerGoodsSelected(goods.id)"
+                  @click.stop="singerGoodsSelected(goods)"
               ></a>
             </div>
             <div class="center">
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="tabBarRight">
-          <router-link class="pay" :to="{path:'/confirmOrder'}" tag="a">去结算({{goodsCount}})</router-link>
+          <button class="pay" @click="toPay" >去结算({{goodsCount}})</button>
         </div>
       </div>
     </div>
@@ -63,12 +63,12 @@
 
 <script>
 import {mapState, mapMutations} from 'vuex'
-import { Dialog } from 'vant'
+import {Dialog, Toast} from 'vant'
 import SelectLogin from "../login/SelectLogin.vue"
 import {SELECTED_SINGER_GOODS} from "../../store/mutations-type";
 
 //接口方法
-import {addUserGoodsCard, delAllGoodsCard, delUserGoodsCard, getUserGoodsCard} from "../../service/api";
+import {addUserGoodsCard, delAllGoodsCard, delUserGoodsCard, getUserGoodsCard,singerGoodsSelected,allCheckGoods} from "../../service/api";
 
 export default {
   name: "Cart",
@@ -95,7 +95,8 @@ export default {
           selectedGoodsCount += 1;
         }
       });
-      return Object.keys(this.shopCart).length;
+      // return Object.keys(this.shopCart).length;
+      return selectedGoodsCount
     },
     //商品是否全选
     isSelectedAll(){
@@ -120,21 +121,28 @@ export default {
   },
   methods: {
     ...mapMutations(['REDUCE_CART','ADD_GOODS','SELECTED_SINGER_GOODS','SELECTED_ALL_GOODS','CLEAR_CART']),
-
     //初始化购物车数据
     async initGoodsCard(){
       let id = parseInt(this.userInfo.id);
       let res = await getUserGoodsCard(id);
+      console.log(res);
+      // console.log(res.object.cards.length);
+      // console.log(this.shopCart)
       if(res.success){
+        if(res.object.cards.length === 0){
+          this.CLEAR_CART();
+        }
         res.object.cards.forEach((good,index)=>{
-
+          // console.log(good.checked);
           this.ADD_GOODS({
             goodsId: good.g_id,
             goodsName: good.g_name,
             smallImage: good.g_picture,
             goodsPrice: good.g_price,
             gNum:good.g_nums,
-            cId: good.id
+            cId: good.id,
+            checked: good.g_checked,
+            isIf: false
           })
         })
       }
@@ -166,12 +174,14 @@ export default {
       }
       },
 
-    //添加购物车
+    //添加1购物车
     async addToCart(goodsId, goodsName, smallImage, goodsPrice,cId){
-      debugger
-      let res = await addUserGoodsCard(cId)
+
+      let res = await addUserGoodsCard(this.userInfo.id,goodsId)
       console.log(res);
+
       if(res.success){
+
         this.ADD_GOODS({
           goodsId,
           goodsName,
@@ -183,14 +193,23 @@ export default {
     },
 
     //单个商品选中和取消
-    singerGoodsSelected(goodsId) {
+    async singerGoodsSelected(goods) {
+      let checked = goods.checked;
+      console.log(checked);
+      if(checked !== null){
+        checked = !checked;
+      }
 
-      this.SELECTED_SINGER_GOODS({goodsId});
+
+      let res = await singerGoodsSelected(goods.cid,checked)
+      console.log(res);
+      this.SELECTED_SINGER_GOODS({goodsId: goods.id});
     },
 
     //全选和取消全选
-    selectedAll(isSelected) {
-
+    async selectedAll(isSelected) {
+      let res = await allCheckGoods(parseInt(this.userInfo.id ),isSelected)
+      console.log(res);
       this.SELECTED_ALL_GOODS({isSelected});
     },
 
@@ -215,6 +234,21 @@ export default {
             //do noting
           });
     },
+
+
+    //去支付
+    toPay(){
+      if(this.goodsCount < 1){
+        Toast({
+          message: '请先选择商品后再结算',
+          duration: 600
+        })
+      }else {
+        this.$router.push({name:'order',query:{totalPrice: this.totalPrice}})
+      }
+
+    },
+
 
 
 

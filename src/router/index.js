@@ -22,12 +22,14 @@ import Order from "../views/order/Order.vue";
 import MyAddress from "../views/order/children/MyAddress.vue";
 import AddAddress from "../views/order/children/children/AddAddress.vue";
 import EditAddress from "../views/order/children/children/EditAddress.vue";
+import GoodsContent from "../views/order/children/GoodsContent.vue";
 
 import Login from "../views/login/Login.vue";
 import Register from "../views/login/Register.vue"
 
 import ServiceMsg from "../views/service/ServiceMsg.vue";
 
+import GoodsSearch from "../views/goodsSearch/GoodsSearch.vue";
 //创建路由对象
 const routes = [
     {path: '/', redirect: '/dashboard'},
@@ -91,12 +93,14 @@ const routes = [
                     {path:'addAddress', name: 'addAddress', component: AddAddress},
                     {path:'editAddress', name: 'editAddress', component: EditAddress}
                 ]
-            }
+            },
+            {path: 'goodsContent' , name:'goodsContent', component: GoodsContent}
         ]
     },
     {path: '/login', name: 'login', component: Login},
     {path: '/register', name: 'register', component: Register},
-    {path: '/msg', name: 'msg', component: ServiceMsg}
+    {path: '/msg', name: 'msg', component: ServiceMsg},
+    {path: '/goodsSearch',  name:'goodsSearch',component: GoodsSearch}
 ]
 
 const router = createRouter({

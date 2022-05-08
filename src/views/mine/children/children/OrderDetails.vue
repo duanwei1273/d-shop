@@ -5,8 +5,9 @@
         title="待付款"
         left-arrow
         @click-left="this.$router.back()"
+        :fixed=true
     />
-    <van-steps :active="active">
+    <van-steps :active="active" style="margin-top: 2.5rem">
       <van-step>买家下单</van-step>
       <van-step>商家接单</van-step>
       <van-step>买家提货</van-step>
@@ -16,27 +17,28 @@
       <div class="wrapperItem">
         <div class="header">
           <span class="titleName">天天特价工厂</span>
-          <span class="titleState">待支付</span>
+          <span class="titleState">{{order.order_status}}</span>
         </div>
-        <div class="content">
+        <div class="content" v-for="(item , index)  in order.goods" :key="order.g_id">
           <div class="contentLift">
-            <van-image src="https://cdn.jsdelivr.net/npm/@vant/assets/cat.jpeg" width="90" height="90" radius="5" />
+            <van-image :src="item.g_picture" width="90" height="90" radius="5" />
           </div>
           <div class="contentRight">
-            <div class="goodsName">篮球短裤男士夏季大码运动</div>
+            <div class="goodsName">{{item.g_name}}</div>
             <div class="goodsPriceNum">
-              <div class="goodsPrice">￥31.90</div>
-              <div class="goodsNum">x1</div>
+              <div class="goodsPrice">{{$filters.moneyFormat(item.g_price)}}</div>
+              <div class="goodsNum">x{{item.g_count}}</div>
             </div>
           </div>
         </div>
         <div class="footer">
           <van-cell-group>
-            <van-cell title="实付款" value="￥31.90" value-class="priceFooter" />
-            <van-cell title="订单编号" value="15502229765655"  />
+            <van-cell title="实付款" :value="'￥'+order.total_price" value-class="priceFooter" />
+            <van-cell title="订单编号" :value="order.order_no"  />
+            <van-cell title="订单时间" :value="order.create_time"  />
             <van-cell title="运费" value="$0.00"  />
             <van-cell title="运费险" value="$0.00"  />
-            <van-cell title="收货地址" value="**********"  />
+            <van-cell title="收货地址" :value="order.address" center />
 
           </van-cell-group>
         </div>
@@ -51,12 +53,40 @@
 </template>
 
 <script>
+import {idQueryOrder} from "../../../../service/api/index.js";
+
 export default {
   name: "OrderDetails",
   data(){
     return{
-      //进度条
-      active: 0
+
+      //订单
+      order: {}
+    }
+  },
+  computed:{
+    active(){
+      let active = 0;
+      if(this.order.order_status === '代发货'){
+        active = 0;
+      }
+      return active
+    }
+  },
+  mounted() {
+    // console.log(this.$route.query.id)
+    this.getOrderData();
+  },
+  methods:{
+    //获取订单数据
+    async getOrderData(){
+      let res = await idQueryOrder(parseInt(this.$route.query.id))
+
+      if(res.success){
+        this.order = res.object.order
+      }
+
+
     }
   }
 }
@@ -65,12 +95,13 @@ export default {
 <style scoped>
   #orderDetails{
     position: fixed;
+    overflow-y: scroll;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #F5F5F5;
-    z-index: 9999;
+    z-index: 9998;
   }
   ::v-deep .van-nav-bar__content {
     background-color: #FFF;
@@ -88,6 +119,7 @@ export default {
   /*待支付订单面板*/
   #myOrder .wrapper{
     margin: 10px auto;
+    margin-bottom: 50px;
     width: 95%;
   }
   #myOrder .wrapper .wrapperItem{
@@ -117,6 +149,7 @@ export default {
     height: 100px;
     display: flex;
     padding-top: 5px;
+    margin-top: 5px;
   }
   #myOrder .wrapper .wrapperItem .content .contentLift{
 
@@ -132,6 +165,8 @@ export default {
     font-weight: 550;
     margin-top: 10px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   #myOrder .wrapper .wrapperItem .content .contentRight .goodsPriceNum{
     display: flex;

@@ -5,7 +5,7 @@
       <!--面板头部-->
       <div class="login-header">
         <div class="login-logo">
-          <img src="./images/lk_logo_sm.png" alt="" width="300">
+          <img src="https://img0.baidu.com/it/u=2936764601,2973544759&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" alt="" width="120">
         </div>
         <!--面板标题-->
         <div class="login-header-title">
@@ -28,10 +28,10 @@
             <section class="login-verification">
               <input type="number" maxlength="8" placeholder="验证码" v-model="code"/>
             </section>
-            <section class="login-hint">
-              温馨提示：未注册小撩买菜的手机号，登录时将自动注册，且代表已同意
-              <a href="javascript:;">服务协议与隐私政策</a>
-            </section>
+<!--            <section class="login-hint">-->
+<!--              温馨提示：未注册小撩买菜的手机号，登录时将自动注册，且代表已同意-->
+<!--              <a href="javascript:;">服务协议与隐私政策</a>-->
+<!--            </section>-->
           </div>
           <!--账号登录部分-->
           <div :class="{current: !loginMode}">
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {getPhoneCode, phoneCodeLogin, passwordLogin, getEmailCode, emailCodeLogin} from './../../service/api/index'
+import { passwordLogin, getEmailCode, emailCodeLogin} from './../../service/api/index'
 import {mapActions, mapMutations} from 'vuex'
 import {Toast} from "vant"
 export default {

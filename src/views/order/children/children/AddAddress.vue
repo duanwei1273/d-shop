@@ -46,8 +46,16 @@ export default {
 
     async onSave(content) {
       // Toast('save');
+      console.log(content.areaCode);
       if(this.userInfo.id){
-        let res = await addADDress(content.province+content.city+content.county+content.addressDetail, content.name, content.tel, this.userInfo.id)
+        let res = await addADDress(content.province+content.city+content.county+content.addressDetail, content.name, content.tel,content.areaCode ,this.userInfo.id)
+        if(res.success){
+          Toast({
+            message: '添加成功！',
+            duration:400
+          })
+          this.$router.back();
+        }
       }else {
         Toast({
           message: '您未登录账号，请退出重新登录！',

@@ -12,6 +12,7 @@
     <van-address-edit
         :area-list="areaList"
         :name="name"
+        :address-info="addressInfo"
         show-delete
         show-set-default
         show-search-result
@@ -28,6 +29,9 @@
 <script>
 import {Toast} from "vant";
 import { areaList } from '@vant/area-data';
+import {editAddress, delAddress} from "../../../../service/api/index.js";
+import {mapState} from "vuex";
+
 export default {
   name: "EidAddress",
   data() {
@@ -35,18 +39,43 @@ export default {
       name: 'aaa',
       areaList:areaList,
       searchResult: [],
+      addressInfo:{}
     };
+  },
+  computed:{
+    ...mapState(['userInfo'])
+  },
+  mounted() {
+    console.log(this.$route.params);
+    this.getUserAddress();
   },
   methods: {
     onClickLeft(){
       this.$router.back();
     },
-
-    onSave() {
-      Toast('save');
+    //保存上传地址
+    async onSave(content) {
+      // Toast('save');
+      let res = await editAddress(this.$route.params.aid,content.addressDetail,content.name,content.tel,content.areaCode,this.userInfo.id);
+      if (res.success){
+        Toast({
+          message: '修改成功',
+          duration: 400
+        })
+        this.$router.back()
+      }
     },
-    onDelete() {
-      Toast('delete');
+    //删除
+    async onDelete(content) {
+      let res = await delAddress(this.$route.params.aid)
+      if (res.success){
+        Toast({
+          message: '已删除',
+          duration: 400
+        })
+        this.$router.back()
+      }
+
     },
     onChangeDetail(val) {
       if (val) {
@@ -60,6 +89,22 @@ export default {
         this.searchResult = [];
       }
     },
+
+    //获取用户收货地址
+    getUserAddress(){
+      let addressS = this.$route.params;
+      console.log(addressS);
+      this.addressInfo = {
+        id: addressS.id,
+        name: addressS.name,
+        areaCode: addressS.areaCode,
+        tel: addressS.tel,
+        addressDetail: addressS.address
+      }
+      console.log(this.addressInfo);
+
+    }
+    //
   },
 }
 </script>

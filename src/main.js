@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
 import store from './store/index.js'
-import { Step, Steps,Tab, Tabs, Button , ActionBar, ActionBarIcon, ActionBarButton ,Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
+import {Search , Divider , Popup , Step, Steps,Tab, Tabs, Button , ActionBar, ActionBarIcon, ActionBarButton ,Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
 
 //引入fasteclick
 import FastClick from 'fastclick'
@@ -21,8 +21,8 @@ import './style/common.less'
 //引入rem
 import './config/rem.js'
 
-
-
+// import axios from "axios";
+// axios.defaults.withCredentials = true
 
 
 const app = createApp(App)
@@ -44,6 +44,9 @@ app.use(store);
 
 
 //使用vantUI组件
+app.use(Search);
+app.use(Divider);
+app.use(Popup);
 app.use(Step);
 app.use(Steps);
 app.use(Tab);
