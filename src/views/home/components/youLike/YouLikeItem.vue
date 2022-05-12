@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="content">
       <div class="imageWrapper">
-        <div class="is-visible">
+        <div class="is-visible" @click="this.$router.push({name: 'goodsDetails', params:{id: product.id}})">
           <van-image class="image" :src="product.g_picture" alt="product.product_name">
             <template v-slot:loading>
               <van-loading type="spinner" size="20" />

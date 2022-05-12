@@ -2,7 +2,7 @@
   <div id="orderDetails">
     <!-- 头部导航   -->
     <van-nav-bar
-        title="待付款"
+        :title="state"
         left-arrow
         @click-left="this.$router.back()"
         :fixed=true
@@ -17,7 +17,7 @@
       <div class="wrapperItem">
         <div class="header">
           <span class="titleName">天天特价工厂</span>
-          <span class="titleState">{{order.order_status}}</span>
+<!--          <span class="titleState">{{order.order_status}}</span>-->
         </div>
         <div class="content" v-for="(item , index)  in order.goods" :key="order.g_id">
           <div class="contentLift">
@@ -25,6 +25,7 @@
           </div>
           <div class="contentRight">
             <div class="goodsName">{{item.g_name}}</div>
+            <div class="goodsState">{{item.g_status}}</div>
             <div class="goodsPriceNum">
               <div class="goodsPrice">{{$filters.moneyFormat(item.g_price)}}</div>
               <div class="goodsNum">x{{item.g_count}}</div>
@@ -45,7 +46,7 @@
       </div>
     </div>
     <div class="btns">
-      <van-button class="btn" color="#000" plain size="small" round>延长收货</van-button>
+<!--      <van-button class="btn" color="#000" plain size="small" round @click="refund">申请退款</van-button>-->
       <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>
       <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>
     </div>
@@ -61,33 +62,44 @@ export default {
     return{
 
       //订单
-      order: {}
+      order: {},
+      //状态
+      state: '待发货'
     }
   },
   computed:{
     active(){
       let active = 0;
-      if(this.order.order_status === '代发货'){
+      if(this.$route.query.state === 'a'){
         active = 0;
+      }else if(this.$route.query.state === 'b'){
+        active = 1
       }
       return active
     }
   },
   mounted() {
     // console.log(this.$route.query.id)
+    console.log(this.$route.query.state);
     this.getOrderData();
   },
   methods:{
     //获取订单数据
     async getOrderData(){
       let res = await idQueryOrder(parseInt(this.$route.query.id))
-
+      console.log(res);
       if(res.success){
         this.order = res.object.order
       }
 
 
-    }
+    },
+    //申请退款
+     refund(){
+       console.log(this.order);
+       this.$router.push({name: 'goodsRefund', params:{id: this.order.id, og_id: this.order.goods[0].og_id}})
+     }
+
   }
 }
 </script>
@@ -168,6 +180,11 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  #myOrder .wrapper .wrapperItem .content .contentRight .goodsState{
+    font-size: 0.8rem;
+    color: #ff4200;
+  }
+
   #myOrder .wrapper .wrapperItem .content .contentRight .goodsPriceNum{
     display: flex;
     justify-content: space-between;

@@ -14,6 +14,9 @@ import ModifyTheEmail from "../views/mine/children/children/ModifyTheEmail.vue";
 import ModifyThePw from "../views/mine/children/children/ModifyThePw.vue";
 import Myorder from "../views/mine/children/Myorder.vue";
 import OrderDetails from "../views/mine/children/children/OrderDetails.vue";
+import GoodsRefund from "../views/mine/children/children/GoodsRefund.vue";
+import RefundDateils from "../views/mine/children/children/RefundDetails.vue";
+import Evaluate from "../views/mine/children/children/Evaluate.vue";
 
 import Cart from "./../views/cart/Cart.vue";
 import Category from "./../views/category/Category.vue";
@@ -73,7 +76,10 @@ const routes = [
                         name: 'myOrder',
                         component: Myorder,
                         children: [
-                            {path: 'orderDetails', name: 'orderDetails', component: OrderDetails}
+                            {path: 'orderDetails', name: 'orderDetails', component: OrderDetails},
+                            {path: 'goodsRefund', name: 'goodsRefund', component: GoodsRefund},
+                            {path: 'refundDetails', name: 'refundDetails', component: RefundDateils},
+                            {path: 'evaluate', name: 'evaluate', component: Evaluate}
                         ]
                     }
                 ]

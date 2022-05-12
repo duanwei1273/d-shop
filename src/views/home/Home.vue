@@ -136,12 +136,12 @@ export default {
     async homeAddToCart(goods){
       let res = await addUserGoodsCard(this.userInfo.id,goods.id);
 
-      console.log(res);
+      console.log(goods,'价格');
       this.ADD_GOODS({
         goodsId: goods.id,
-        goodsName: goods.name,
-        smallImage: goods.small_image,
-        goodsPrice: goods.price
+        goodsName: goods.g_name,
+        smallImage: goods.g_picture,
+        goodsPrice: goods.g_price
       });
       //提示用户
       Toast({

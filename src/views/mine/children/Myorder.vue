@@ -17,18 +17,18 @@
       <van-tab title="待发货" name="a">
         <!--   待支付订单面板     -->
         <div class="wrapper">
-          <div class="wrapperItem" v-for="(order, index) in orders" :key="order.id" >
+          <div class="wrapperItem" v-for="(order, index) in forders" :key="order.id" >
             <div class="header">
               <span class="titleName">天天特价工厂</span>
               <span class="titleTime"> {{ order.create_time }}</span>
-              <span class="titleState">{{order.order_status}}</span>
+              <span class="titleState">{{order.g_status}}</span>
             </div>
-            <div class="content" @click="this.$router.push({name: 'orderDetails',query:{id:order.id}})">
+            <div class="content" @click="this.$router.push({name: 'orderDetails',query:{id:order.id,state: activeName}})">
               <div class="contentLift">
                 <van-image :src="order.g_picture" width="90" height="90" radius="5" />
               </div>
               <div class="contentRight">
-                <div class="goodsName">篮球短裤男士夏季大码运动</div>
+                <div class="goodsName">{{order.g_name}}</div>
                 <div class="goodsPriceNum">
                   <div class="goodsPrice">{{$filters.moneyFormat(order.g_price)}}</div>
                   <div class="goodsNum">x{{order.g_count}}</div>
@@ -36,39 +36,149 @@
               </div>
             </div>
             <div class="footer">
-              <van-button class="btn" color="#000" plain size="small" round @click="refund">申请退款</van-button>
-              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>
-              <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>
+              <van-button class="btn"  color="#000" plain size="small" round @click="this.$router.push({name:'goodsRefund',params:{g_name:order.g_name,g_picture: order.g_picture,g_price: order.g_price,g_count: order.g_count,og_id:order.og_id}})">申请退款</van-button>
+              <van-button class="btn"  color="#ff4200" plain size="small" round @click="this.$router.push({name: 'orderDetails',query:{id:order.id,state: activeName}})">订单详情</van-button>
             </div>
           </div>
-<!--          <div class="wrapperItem">-->
+
+        </div>
+      </van-tab>
+      <van-tab title="待收货" name="b">
+
+        <div class="wrapper">
+          <div class="wrapperItem" v-for="(order, index) in lorders" :key="order.id" >
+            <div class="header">
+              <span class="titleName">天天特价工厂</span>
+              <span class="titleTime"> {{ order.create_time }}</span>
+              <span class="titleState">{{order.g_status}}</span>
+            </div>
+            <div class="content" @click="this.$router.push({name: 'orderDetails',query:{id:order.id,state: activeName}})">
+              <div class="contentLift">
+                <van-image :src="order.g_picture" width="90" height="90" radius="5" />
+              </div>
+              <div class="contentRight">
+                <div class="goodsName">{{order.g_name}}</div>
+                <div class="goodsPriceNum">
+                  <div class="goodsPrice">{{$filters.moneyFormat(order.g_price)}}</div>
+                  <div class="goodsNum">x{{order.g_count}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+              <!--              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>-->
+              <van-button class="btn"  color="#ff4200" plain size="small" round @click="sure(order.og_id)">确认收货</van-button>
+            </div>
+          </div>
+
+        </div>
+
+
+      </van-tab>
+      <van-tab title="待评价" name="c">
+        <div class="wrapper">
+          <div class="wrapperItem"  v-for="(item, index) in evaluate" :key="item.id">
+            <div class="header">
+              <span class="titleName">天天特价工厂</span>
+              <span class="titleTime"> {{item.create_time}} </span>
+              <span class="titleState">{{item.g_status}}</span>
+            </div>
+            <div class="content" >
+              <div class="contentLift">
+                <van-image :src="item.g_picture" width="90" height="90" radius="5" />
+              </div>
+              <div class="contentRight">
+                <div class="goodsName">{{item.g_name}}</div>
+                <div class="goodsPriceNum">
+                  <div class="goodsPrice">{{item.g_price}}</div>
+<!--                  <div class="goodsNum">x1</div>-->
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+              <van-button class="btn"  color="red" plain size="small" round @click="this.$router.push({name: 'evaluate',params:{id: item.og_id, g_id: item.g_id}})">去评价</van-button>
+            </div>
+          </div>
+
+        </div>
+      </van-tab>
+      <van-tab title="售后/退款" name="d">
+        <div class="wrapper">
+          <div class="wrapperItem" v-for="(order, index) in sorders" :key="order.id" >
+            <div class="header">
+              <span class="titleName">天天特价工厂</span>
+              <span class="titleTime"> {{ order.create_time }}</span>
+              <span class="titleState">{{order.order_status}}</span>
+            </div>
+            <div class="content" @click="this.$router.push({name: 'refundDetails',query:{id:order.id}})">
+              <div class="contentLift">
+                <van-image :src="order.g_picture" width="90" height="90" radius="5" />
+              </div>
+              <div class="contentRight">
+                <div class="goodsName">{{order.g_name}}</div>
+                <div class="goodsPriceNum">
+                  <div class="goodsPrice">{{$filters.moneyFormat(order.g_price)}}</div>
+                  <div class="goodsNum">x{{order.g_count}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+              <van-button class="btn"  color="#000" plain size="small" round >撤销申请</van-button>
+            </div>
+          </div>
+
+        </div>
+      </van-tab>
+<!--      <van-tab title="搜索结果" name="e">-->
+
+<!--        <div class="wrapper">-->
+<!--          <div class="wrapperItem" v-for="(order, index) in forders" :key="order.id" >-->
 <!--            <div class="header">-->
 <!--              <span class="titleName">天天特价工厂</span>-->
-<!--              <span class="titleState">待支付</span>-->
+<!--              <span class="titleTime"> {{ order.create_time }}</span>-->
+<!--              <span class="titleState">{{order.g_status}}</span>-->
 <!--            </div>-->
-<!--            <div class="content">-->
+<!--            <div class="content" @click="this.$router.push({name: 'orderDetails',query:{id:order.id}})">-->
 <!--              <div class="contentLift">-->
-<!--                <van-image src="https://cdn.jsdelivr.net/npm/@vant/assets/cat.jpeg" width="90" height="90" radius="5" />-->
+<!--                <van-image :src="order.g_picture" width="90" height="90" radius="5" />-->
 <!--              </div>-->
 <!--              <div class="contentRight">-->
-<!--                <div class="goodsName">篮球短裤男士夏季大码运动</div>-->
+<!--                <div class="goodsName">{{order.g_name}}</div>-->
 <!--                <div class="goodsPriceNum">-->
-<!--                  <div class="goodsPrice">￥31.90</div>-->
-<!--                  <div class="goodsNum">x1</div>-->
+<!--                  <div class="goodsPrice">{{$filters.moneyFormat(order.g_price)}}</div>-->
+<!--                  <div class="goodsNum">x{{order.g_count}}</div>-->
 <!--                </div>-->
 <!--              </div>-->
 <!--            </div>-->
 <!--            <div class="footer">-->
-<!--              <van-button class="btn" color="#000" plain size="small" round>延长收货</van-button>-->
-<!--              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>-->
-<!--              <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>-->
+<!--              &lt;!&ndash;              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>&ndash;&gt;-->
+<!--              <van-button class="btn"  color="#ff4200" plain size="small" round @click="sure(order.id)">确认收货</van-button>-->
 <!--            </div>-->
 <!--          </div>-->
-        </div>
-      </van-tab>
-      <van-tab title="待收货" name="b">内容 2</van-tab>
-      <van-tab title="待评价" name="c">内容 3</van-tab>
-      <van-tab title="售后/退款" name="d">内容 4</van-tab>
+<!--          &lt;!&ndash;          <div class="wrapperItem">&ndash;&gt;-->
+<!--          &lt;!&ndash;            <div class="header">&ndash;&gt;-->
+<!--          &lt;!&ndash;              <span class="titleName">天天特价工厂</span>&ndash;&gt;-->
+<!--          &lt;!&ndash;              <span class="titleState">待支付</span>&ndash;&gt;-->
+<!--          &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          &lt;!&ndash;            <div class="content">&ndash;&gt;-->
+<!--          &lt;!&ndash;              <div class="contentLift">&ndash;&gt;-->
+<!--          &lt;!&ndash;                <van-image src="https://cdn.jsdelivr.net/npm/@vant/assets/cat.jpeg" width="90" height="90" radius="5" />&ndash;&gt;-->
+<!--          &lt;!&ndash;              </div>&ndash;&gt;-->
+<!--          &lt;!&ndash;              <div class="contentRight">&ndash;&gt;-->
+<!--          &lt;!&ndash;                <div class="goodsName">篮球短裤男士夏季大码运动</div>&ndash;&gt;-->
+<!--          &lt;!&ndash;                <div class="goodsPriceNum">&ndash;&gt;-->
+<!--          &lt;!&ndash;                  <div class="goodsPrice">￥31.90</div>&ndash;&gt;-->
+<!--          &lt;!&ndash;                  <div class="goodsNum">x1</div>&ndash;&gt;-->
+<!--          &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--          &lt;!&ndash;              </div>&ndash;&gt;-->
+<!--          &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          &lt;!&ndash;            <div class="footer">&ndash;&gt;-->
+<!--          &lt;!&ndash;              <van-button class="btn" color="#000" plain size="small" round>延长收货</van-button>&ndash;&gt;-->
+<!--          &lt;!&ndash;              <van-button class="btn"  color="#000" plain size="small" round>查看物流</van-button>&ndash;&gt;-->
+<!--          &lt;!&ndash;              <van-button class="btn"  color="#ff4200" plain size="small" round>确认收货</van-button>&ndash;&gt;-->
+<!--          &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          &lt;!&ndash;          </div>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </van-tab>-->
     </van-tabs>
 
     <!--  路由出口  -->
@@ -77,8 +187,9 @@
 </template>
 
 <script>
-import {stateQuerOrder} from "../../../service/api/index.js";
+import {stateQuerOrder,sureGoods} from "../../../service/api/index.js";
 import {mapState} from "vuex";
+import {Toast} from "vant";
 
 export default {
   name: "Myorder",
@@ -86,8 +197,14 @@ export default {
     return{
       //状态
       activeName:'a',
-      //订单数组
-      orders:[],
+      //代发货订单数组
+      forders:[],
+      //待收货订单数组
+      lorders: [],
+      //售后退款订单数组
+      sorders: [],
+      //待评价数组
+      evaluate: [],
       //输入框
       value: ''
     }
@@ -105,32 +222,58 @@ export default {
     //获取订单数据
     async getOrder(){
       let state = ''
-      if(this.activeName === 'a'){
-        state = '待发货'
+      state = '待发货'
+      let fres = await stateQuerOrder(this.userInfo.id, state)
+      console.log(fres);
+
+      if(fres.success) {
+        this.forders = fres.object.orders;
       }
-      // console.log(state);
-      // console.log(this.userInfo.id);
-      let res = await stateQuerOrder(this.userInfo.id,state)
-      console.log(res);
-      if(res.success){
-        this.orders = res.object.orders
+      state = '待收货'
+      let lres = await stateQuerOrder(this.userInfo.id, state)
+      if(lres.success) {
+        this.lorders = lres.object.orders;
       }
+
+
+
+      state = '退款中'
+      let sres = await stateQuerOrder(this.userInfo.id, state)
+      if(sres.success){
+        this.sorders = sres.object.orders;
+      }
+      state = '待评价'
+      let evaluates = await stateQuerOrder(this.userInfo.id, state)
+      if(sres.success){
+        this.evaluate = evaluates.object.orders;
+      }
+      console.log(this.evaluate);
+
     },
     //点击tab
     tabChlick(){
       console.log('点击')
     },
-    //退款
-    refund(){
-      console.log(this.value)
+    //确认收货
+    async sure(og_id){
+
+      let res = await sureGoods(og_id)
+      if(res.success){
+        Toast({
+          message: res.msg,
+          duration: 500
+        })
+        this.$router.go(0)
+      }
     }
+
   }
 }
 </script>
 
 <style scoped>
 #myOrder{
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -139,7 +282,15 @@ export default {
   height: 100%;
   background-color: #f5f5f5;
   z-index: 200;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  overflow-y:scroll;
+
 }
+#myOrder::-webkit-scrollbar {
+  display: none;
+}
+
 #myOrder .nav{
   position: fixed;
   top: 0;
@@ -201,6 +352,7 @@ export default {
 #myOrder .wrapper .wrapperItem .header .titleName{
   font-size: 0.9rem;
   font-weight: 600;
+
 }
 #myOrder .wrapper .wrapperItem .header .titleTime{
   font-size: 0.5rem;
@@ -231,6 +383,8 @@ export default {
   font-weight: 550;
   margin-top: 10px;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 #myOrder .wrapper .wrapperItem .content .contentRight .goodsPriceNum{
   display: flex;

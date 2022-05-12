@@ -24,7 +24,7 @@
             <div class="right">
               <a href="#">{{goods.name}}</a>
               <div class="bottomContent">
-                <p class="shopPrice">{{ $filters.moneyFormat(goods.price) }}</p>
+                <p class="shopPrice">{{ $filters.moneyFormat(goods.price * goods.num) }}</p>
                 <div class="shopDeal">
                   <span @click="removeOutCart(goods.id, goods.num,goods.cid)">-</span>
                   <input disabled type="number" v-model="goods.num">
@@ -68,7 +68,7 @@ import SelectLogin from "../login/SelectLogin.vue"
 import {SELECTED_SINGER_GOODS} from "../../store/mutations-type";
 
 //接口方法
-import {addUserGoodsCard, delAllGoodsCard, delUserGoodsCard, getUserGoodsCard,singerGoodsSelected,allCheckGoods} from "../../service/api";
+import {addUserGoodsCard, delAllGoodsCard, delUserGoodsCard, getUserGoodsCard,singerGoodsSelected,allCheckGoods} from "../../service/api/index.js";
 
 export default {
   name: "Cart",
@@ -125,7 +125,7 @@ export default {
     async initGoodsCard(){
       let id = parseInt(this.userInfo.id);
       let res = await getUserGoodsCard(id);
-      console.log(res);
+      // console.log(res);
       // console.log(res.object.cards.length);
       // console.log(this.shopCart)
       if(res.success){
@@ -138,7 +138,7 @@ export default {
             goodsId: good.g_id,
             goodsName: good.g_name,
             smallImage: good.g_picture,
-            goodsPrice: good.g_price,
+            goodsPrice: good.g_price / good.g_nums,
             gNum:good.g_nums,
             cId: good.id,
             checked: good.g_checked,
@@ -364,7 +364,7 @@ export default {
 }
 
 .cartCheckBox{
-  background: url(" ../public/images/shop-icon.png ") no-repeat;
+  background: url("./images/shop-icon.png ") no-repeat;
   -webkit-background-size: 2.5rem 5rem;
   background-size: 2.5rem 5rem;
   width: 1rem;

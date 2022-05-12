@@ -36,7 +36,7 @@ import ContentView from "./components/contentView/ContentView.vue"
 import BScroll from 'better-scroll'
 import {getGoodsClassify, getCategoryGoods, addUserGoodsCard} from './../../service/api/index.js'
 import { Toast } from 'vant'
-import {mapMutations} from "vuex";
+import {mapMutations,mapState} from "vuex";
 export default {
   name: "Category",
   data(){
@@ -50,6 +50,9 @@ export default {
       //左边item选择与否
       currentIndex: 0
     }
+  },
+  computed:{
+    ...mapState(['userInfo'])
   },
   created() {
     this.initData();
@@ -65,10 +68,10 @@ export default {
     async AddToCart(goods){
       // console.log(goods.id);
       let res = await addUserGoodsCard(this.userInfo.id,goods.id);
-      console.log(res);
-      // if(res.success){
-      //
-      // }
+      // console.log(res);
+      if(!res.success){
+        return
+      }
       this.ADD_GOODS({
         goodsId: goods.id,
         goodsName: goods.g_name,

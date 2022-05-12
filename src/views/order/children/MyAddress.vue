@@ -45,6 +45,7 @@ export default {
     ...mapState(['userInfo'])
   },
   mounted() {
+    // this.$router.go(0)
     this.getAddress();
   },
   methods: {

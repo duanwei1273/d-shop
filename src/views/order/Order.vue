@@ -129,11 +129,12 @@ export default {
     goodsCount(){
       let selectedGoodsCount = 0;
       Object.values(this.shopCart).forEach((goods, index)=>{
-        if(1){
-          selectedGoodsCount += 1;
+        if(goods.checked){
+          selectedGoodsCount++ ;
         }
       });
-      return Object.keys(this.shopCart).length;
+
+      return selectedGoodsCount;
     },
 
   },
@@ -142,6 +143,7 @@ export default {
     // console.log(this.$route.params)
 
     this.getShowImg();
+    console.log(this.goodsCount);
 
 
   },
@@ -207,7 +209,7 @@ export default {
           duration: 500
         })
         this.showPopup = false
-        this.$router.back()
+        await this.$router.push({name: 'cart'})
       }
     },
 

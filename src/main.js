@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index.js'
 import store from './store/index.js'
-import {Search , Divider , Popup , Step, Steps,Tab, Tabs, Button , ActionBar, ActionBarIcon, ActionBarButton ,Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
+import { Rate,RadioGroup, Radio, Search , Divider , Popup , Step, Steps,Tab, Tabs, Button , ActionBar, ActionBarIcon, ActionBarButton ,Field,  Uploader, Tabbar, TabbarItem, Swipe, SwipeItem, Loading, Image as VanImage , Toast , Dialog , NavBar , ContactCard , AddressList , AddressEdit, Cell, CellGroup , SubmitBar , Icon , Grid, GridItem } from 'vant';
 
 //引入fasteclick
 import FastClick from 'fastclick'
@@ -44,6 +44,9 @@ app.use(store);
 
 
 //使用vantUI组件
+app.use(Rate);
+app.use(Radio);
+app.use(RadioGroup);
 app.use(Search);
 app.use(Divider);
 app.use(Popup);

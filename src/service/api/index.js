@@ -22,6 +22,9 @@ export const getAllGoods = () => ajax(ZZY_BASE_URL + '/goods/')
 //根据分类id得到所有商品
 export const getCategoryGoods = (id)=>ajax(ZZY_BASE_URL + '/goods/get/' + id )
 
+//更具id获得单个id
+export const idGetGoods = (id)=>ajax(ZZY_BASE_URL + '/goods/' + id)
+
 
 
 
@@ -94,7 +97,17 @@ export const submitOrder = (address_id,description,good_count,good_id,total_pric
 export const idQueryOrder = (id)=>ajax(ZZY_BASE_URL + '/order/detail/' + id)
 //根据订单状态和用户id查询订单列表
 export const stateQuerOrder = (userId, status)=>ajax(ZZY_BASE_URL + '/order/' + userId, {status})
-
+//订单退款接口
+//退款详情
+export const refunddetails = (id)=>ajax(ZZY_BASE_URL + '/returnOrders/' + id)
+//申请退款
+export const appRefund = (og_id, return_amount, return_reason)=>ajax(ZZY_BASE_URL + '/returnOrders/',{og_id, return_amount, return_reason},'PUT')
+//评价
+export const commentary = (og_id,u_id,g_id,content,grade)=>ajax(ZZY_BASE_URL + '/commentary/',{og_id,u_id,g_id,content,grade},'POST')
+//确认收货
+export const sureGoods = (id)=>ajax(ZZY_BASE_URL + '/order/',{id},'PUT')
+//更具商品id获取评论
+export const idGetcommentary = (id)=>ajax(ZZY_BASE_URL + '/commentary/' + id)
 
 
 //二维码支付接口

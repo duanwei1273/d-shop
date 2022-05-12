@@ -73,7 +73,7 @@ export default {
           message: '已删除',
           duration: 400
         })
-        this.$router.back()
+        this.$router.go(-1)
       }
 
     },

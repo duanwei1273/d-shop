@@ -3,13 +3,14 @@
     <!--  顶部导航栏  -->
     <van-nav-bar
         title="上传头像"
+        right-text="保存"
         left-arrow
         :fixed=true
         @click-left="$router.back()"
+        @click-right="modifyPic"
     />
-    <div>
-      <input type="file" >
-      <button @click="afterRead">发送</button>
+    <div style="margin-top: 3rem">
+      <van-uploader :after-read="afterRead" multiple />
     </div>
 
   </div>
@@ -17,30 +18,41 @@
 
 <script>
 // import {modifThePicture} from "../../../../service/api/index.js";
+import {mapState} from "vuex";
 import axios from "axios";
 
 export default {
   name: "ModifyThePicture",
   data(){
     return{
-      file: null
+      file: null,
     }
   },
+  computed:{
+    ...mapState(['userInfo'])
+  },
   methods: {
-    async afterRead(file){
-      console.log(file);
-
+    afterRead(file){
+      // console.log(file);
+      this.file = file;
+      // console.log(res);
+    },
+    //修改
+    async modifyPic(){
       let forms = new FormData()
-      let configs = {
-        headers:{'Content-Type': 'multipart/form-data'}
-      }
-      forms.append('file',file);
-      forms.append('abc','abc');
-      await axios.post('http://192.168.0.109:8888/user/image',forms,configs).then(res=>{
+
+      forms.append('file',this.file.file);
+      forms.append('id',this.userInfo.id)
+      await axios.post('http://192.168.0.104:8887/user/avatar',forms,{
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }
+      ).then(res=>{
         console.log(res);
       })
-      // console.log(res);
     }
+
   }
 }
 </script>

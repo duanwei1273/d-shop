@@ -18,7 +18,7 @@ export default {
     [ADD_GOODS](state, {goodsId, goodsName, smallImage, goodsPrice,gNum,cId,checked = true,isIf=true}){
         let shopCart = state.shopCart;
         //判断商品是否存在
-
+        console.log(goodsPrice,'商品价格')
         if(shopCart[goodsId] && isIf){//存在
             shopCart[goodsId]['num']++;
         }else {//不存在

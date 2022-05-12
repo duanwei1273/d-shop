@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" data-index="3">
     <div class="itemWrapper">
-      <div class="imageWrapper">
+      <div class="imageWrapper" @click="this.$router.push({name: 'goodsDetails', params:{id: product.id}})">
 
         <img class="image" :src="product.g_picture" :alt="product.g_name">
       </div>

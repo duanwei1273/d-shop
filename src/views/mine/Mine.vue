@@ -76,17 +76,17 @@
     </van-cell-group>
 
     <van-cell-group style="margin-top: 0.6rem">
-      <van-cell title="我的优惠卷" value="1张" is-link icon="shop"></van-cell>
+      <van-cell title="我的优惠卷" value="暂未开放" is-link icon="shop"></van-cell>
       <van-cell title="我的收货地址"  is-link icon="column" @click="this.$router.push('/confirmOrder/myaddress')"></van-cell>
     </van-cell-group>
 
     <van-cell-group style="margin-top: 0.6rem">
       <van-cell title="联系客服" value="客服时间07:00-22:00" is-link icon="service" @click="goMsg"></van-cell>
-      <van-cell title="意见反馈"  is-link icon="chat"></van-cell>
+      <van-cell title="意见反馈"  value="暂未开放" icon="chat"></van-cell>
     </van-cell-group>
 
     <van-cell-group style="margin-top: 0.6rem">
-      <van-cell title="云商城" value="下载APP体验更佳" is-link icon="gift-card"></van-cell>
+      <van-cell title="云商城" value="暂未开发" is-link icon="gift-card"></van-cell>
     </van-cell-group>
 
 <!--    <button @click="openSocket">点击</button>-->
@@ -218,6 +218,9 @@ export default {
     width: 100%;
     height: 100%;
     background-color: #F5F5F5;
+  }
+  #mine::-webkit-scrollbar{
+    display: none;
   }
   /*转场动画*/
   .slide-fade-enter-active {
